@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan - Ruanas</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- CABECERA -->
+    <header class="cabecera">
+        <div class="zona-logo">
+            <a href="../../../index.html" class="logo-texto">ARTISAN</a>
+        </div>
+        <nav class="zona-menu">
+            <ul>
+                <li><a href="../../../index.html">Inicio</a></li>
+                <li><a href="../../../lineaproductos.html">Linea de productos</a></li>
+                <li><a href="../../../contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="zona-carrito">
+            <a href="../../../carrito.html">
+                <img src="../../../img/diseño/carrito.png" class="icono-carrito" alt="Carrito">
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="contenido-principal">
+        <section class="productos-destacados">
+            <div class="contenedor">
+                <h2>Ruanas</h2>
+                <p>Explora nuestra colección de productos textiles.</p>
+
+                <!-- FILTRO -->
+                <div class="filtro-productos" style="margin-bottom: 20px;">
+                    <label for="filtro-tipo">Mostrar:</label>
+                    <select id="filtro-tipo">
+                        <option value="todos">Todos</option>
+                        <option value="ruana">Ruanas</option>
+                        <option value="poncho">Ponchos</option>
+                    </select>
+                </div>
+
+                <!-- Grilla de productos -->
+                <div class="grilla-productos" id="lista-ruanas">
+                    <!-- Se generarán dinámicamente con JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="pie-pagina">
+        <div class="contenedor">
+            <p>&copy; 2025 Artisan. Todos los derechos reservados.</p>
+            <p>Contacto: <a href="mailto:contacto@artisan.com">contacto@artisan.com</a></p>
+            <div class="redes">
+                <a href="https://www.instagram.com" target="_blank">Instagram</a> |
+                <a href="https://www.facebook.com" target="_blank">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOADER -->
+    <div id="loader" class="loader-ventana">
+        <div class="loader-contenido">
+            <h2>RUANAS</h2>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="../../../js/producto.js"></script>
+    <script src="../../../js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const contenedor = document.getElementById("lista-ruanas");
+            const categoria = "textiles";
+            const productosCategoria = productos[categoria];
+            if (!productosCategoria) return;
+
+            // Función para renderizar productos según filtro
+            function renderizarProductos(filtro = "todos") {
+                contenedor.innerHTML = "";
+                for (const id in productosCategoria) {
+                    const p = productosCategoria[id];
+                    if (!p.esBase) continue; // Solo productos base
+                    if (filtro !== "todos" && p.tipo !== filtro) continue;
+
+                    const div = document.createElement("div");
+                    div.className = "producto";
+                    div.innerHTML = `
+                        <img src="../../../${p.imagenes[0]}" alt="${p.nombre}">
+                        <h3>${p.nombre}</h3>
+                        <p>Precio: $${p.precio.toLocaleString()} COP</p>
+                        <a href="../../../producto.html?categoria=${categoria}&producto=${id}" class="boton-ver">Ver</a>
+                    `;
+                    contenedor.appendChild(div);
+                }
+            }
+
+            // Inicial: mostrar todos
+            renderizarProductos();
+
+            // Filtrado al cambiar selección
+            const selectFiltro = document.getElementById("filtro-tipo");
+            selectFiltro.addEventListener("change", () => {
+                renderizarProductos(selectFiltro.value);
+            });
+        });
+    </script>
+</body>
+</html>
