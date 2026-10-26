@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan - Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="registro-page">
+    {% include '_flash.html' %}
+    <div class="registro-box reveal">
+        <h1>ÚNETE A ARTISAN</h1>
+        <p>Crea tu cuenta para empezar a comprar</p>
+
+        <form action="/registro" method="POST" class="registro-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="nombre" placeholder="Nombre completo" minlength="3" required>
+            <input type="email" name="correo" placeholder="Correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña (mín. 6 caracteres)" minlength="6" required>
+            <input type="password" name="password_confirm" placeholder="Confirmar contraseña" minlength="6" required>
+            <button type="submit" class="boton-ver btn-block">REGISTRARSE</button>
+        </form>
+        <p class="registro-link">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

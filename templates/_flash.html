@@ -1,0 +1,14 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div id="flash-container">
+      {% for category, msg in messages %}
+        <div class="toast {{ category }}" onclick="this.remove()">{{ msg }}</div>
+      {% endfor %}
+    </div>
+    <script>
+      setTimeout(function(){
+        document.querySelectorAll('#flash-container .toast').forEach(function(el){ el.remove(); });
+      }, 4000);
+    </script>
+  {% endif %}
+{% endwith %}

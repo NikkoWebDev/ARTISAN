@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTISAN — Lujo Artesanal & Piezas de Autor Colombianas</title>
+    <meta name="description" content="Joyería textil tejida en mostacilla y marroquinería de autor elaborada a mano en San Agustín, Huila. Piezas únicas con alma y lujo silencioso.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
+</head>
+<body class="home-page">
+    {% include 'header.html' %}
+
+    <main id="main-content">
+        <!-- 1. Hero Section Editorial -->
+        <section class="hero-section" aria-label="Introducción a Artisan">
+            <div class="hero-overlay"></div>
+            <div class="hero-content contenedor reveal">
+                <span class="hero-eyebrow">✦ Alta Joyería Textil & Marroquinería de Autor ✦</span>
+                <h1 class="hero-title">Piezas únicas nacidas de la paciencia y el detalle</h1>
+                <p class="hero-subtitle">
+                    Cada cuenta tejida a mano y cada trazo sobre cuero genuino rescatan la nobleza del oficio tradicional colombiano en San Agustín, Huila. Lujo que se siente, piezas con alma.
+                </p>
+                <div class="hero-actions">
+                    <a href="/lineaproductos" class="btn btn-primary btn-lg">Explorar Colección</a>
+                    <a href="#colecciones" class="btn btn-outline btn-lg">Ver Colecciones</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Insignias de Confianza -->
+        <section class="trust-section" aria-label="Nuestras garantías artesanales">
+            <div class="contenedor trust-grid reveal">
+                <div class="trust-item">
+                    <div class="trust-icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="trust-text">
+                        <h3>100% Hecho a Mano</h3>
+                        <p>Tejido paciente en telar y armado manual sin procesos industriales masivos.</p>
+                    </div>
+                </div>
+
+                <div class="trust-item">
+                    <div class="trust-icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                    </div>
+                    <div class="trust-text">
+                        <h3>Envíos Seguros a Colombia</h3>
+                        <p>Empaque protector de regalo con seguimiento garantizado puerta a puerta.</p>
+                    </div>
+                </div>
+
+                <div class="trust-item">
+                    <div class="trust-icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                        </svg>
+                    </div>
+                    <div class="trust-text">
+                        <h3>Asesoría por WhatsApp</h3>
+                        <p>Atención directa y humana para tallas, personalizaciones y consultas.</p>
+                    </div>
+                </div>
+
+                <div class="trust-item">
+                    <div class="trust-icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <div class="trust-text">
+                        <h3>Materiales Nobles</h3>
+                        <p>Delicas japonesas calibradas Miyuki, mostacilla checa y cuero vacuno genuino.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Vitrina de Colecciones Destacadas -->
+        <section id="colecciones" class="collections-section contenedor reveal" aria-labelledby="col-title">
+            <div class="section-heading text-center">
+                <span class="gold-subtitle">UNIVERSO ARTESANAL</span>
+                <h2 id="col-title" class="titulo-seccion">Nuestras Colecciones</h2>
+                <div class="heading-divider"></div>
+            </div>
+
+            <div class="collections-grid">
+                <article class="collection-card collection-bisuteria">
+                    <div class="collection-img-wrap">
+                        <img src="{{ url_for('static', filename='img/productos/Pulsera_Mostacilla_1_pul_mosta_0_1.webp') }}" alt="Bisutería fina en mostacilla y delica" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <span class="collection-tag">Joyería Textil</span>
+                        <h3>Bisutería en Delica & Mostacilla</h3>
+                        <p>Brazaletes, gargantillas y aretes tejidos con precisión milimétrica, inspirados en la iconografía y el color andino.</p>
+                        <a href="/lineaproductos?categoria=Bisutería" class="btn btn-primary btn-sm">Ver Colección &rarr;</a>
+                    </div>
+                </article>
+
+                <article class="collection-card collection-marroquineria">
+                    <div class="collection-img-wrap">
+                        <img src="{{ url_for('static', filename='img/productos/323r4_1_IMG_20260120_144243_1.webp') }}" alt="Marroquinería de autor en cuero legítimo" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <span class="collection-tag">Cuero de Autor</span>
+                        <h3>Marroquinería Artesanal</h3>
+                        <p>Piezas en cuero plena flor curtido con taninos vegetales y cosido manual. Diseñadas para envejecer con distinción.</p>
+                        <a href="/lineaproductos?categoria=Marroquinería" class="btn btn-primary btn-sm">Ver Colección &rarr;</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 4. Grid de Piezas Recomendadas / Novedades con Drawer Cart integrado -->
+        <section class="featured-section contenedor reveal" aria-labelledby="featured-title">
+            <div class="section-heading text-center">
+                <span class="gold-subtitle">PIEZAS SELECCIONADAS</span>
+                <h2 id="featured-title" class="titulo-seccion">Creaciones Recientes</h2>
+                <p class="subtitulo">Disponibilidad limitada de cada obra artesanal</p>
+                <div class="heading-divider"></div>
+            </div>
+
+            <div class="grilla-productos">
+                {% for p in productos %}
+                <article class="producto producto-card" data-nombre="{{ p.nombre }}" data-categoria="{{ p.categoria }}">
+                    <div class="producto-img-container">
+                        <a href="/producto/{{ p.id }}" class="producto-img-link" aria-label="Ver detalles de {{ p.nombre }}">
+                            <img src="{{ p.imagen_url }}?v={{ cache_buster() }}" alt="{{ p.nombre }}" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                        </a>
+                        {% if p.categoria %}
+                        <span class="producto-badge">{{ p.categoria }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="producto-body">
+                        <span class="producto-artisan-label">Pieza de Autor</span>
+                        <h3 class="producto-title">
+                            <a href="/producto/{{ p.id }}">{{ p.nombre }}</a>
+                        </h3>
+                        <p class="producto-precio">${{ "{:,.0f}".format(p.precio) }} COP</p>
+
+                        <div class="producto-actions">
+                            <button type="button" class="btn btn-primary btn-sm btn-quick-add" data-add-to-cart="{{ p.id }}" data-quantity="1" aria-label="Agregar {{ p.nombre }} a la bolsa">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <span>Agregar</span>
+                            </button>
+                            <a href="/producto/{{ p.id }}" class="btn btn-outline btn-sm">Ver Detalle</a>
+                        </div>
+                    </div>
+                </article>
+                {% else %}
+                <div class="empty-placeholder text-center span-2">
+                    <p>Pronto publicaremos nuevas piezas únicas de nuestra colección.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-40">
+                <a href="/lineaproductos" class="btn btn-outline btn-lg">Ver Todas las Piezas en Catálogo &rarr;</a>
+            </div>
+        </section>
+
+        <!-- 5. Manifiesto Artesanal ("El alma de lo hecho a mano") -->
+        <section id="manifiesto" class="manifesto-section reveal" aria-labelledby="manifesto-title">
+            <div class="contenedor manifesto-inner">
+                <div class="manifesto-visual">
+                    <div class="manifesto-frame">
+                        <img src="{{ url_for('static', filename='img/IMG_20260121_150438.webp') }}" alt="Taller artesanal de Artisan en San Agustín" loading="lazy">
+                        <div class="manifesto-badge">
+                            <span>San Agustín, Huila</span>
+                            <strong>Tierra Ancestral</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manifesto-text">
+                    <span class="gold-subtitle">NUESTRA FILOSOFÍA</span>
+                    <h2 id="manifesto-title" class="manifesto-title">El alma de lo hecho a mano</h2>
+                    <p class="manifesto-lead">
+                        En una época dominada por lo desechable y lo apresurado, nosotros elegimos la devoción por el tiempo.
+                    </p>
+                    <p>
+                        En Artisan no concebimos los accesorios como objetos mecánicos, sino como talismanes portadores de historia. Cada manilla en delica puede requerir hasta diez horas de concentración ininterrumpida; cada corte de cuero honra la materia prima orgánica con tinturas limpias y pulido con cera de abejas local.
+                    </p>
+                    <blockquote class="manifesto-quote">
+                        &ldquo;El verdadero lujo moderno reside en saber quién hizo tu pieza, dónde nació y cuánta paciencia encierra su textura.&rdquo;
+                    </blockquote>
+                    <div class="manifesto-footer">
+                        <span class="manifesto-signature">Artisan Taller Colombiano</span>
+                        <a href="https://wa.me/{{ WHATSAPP_PHONE }}?text=Hola%20Artisan,%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20piezas%20personalizadas" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+                            Consultar Piezas por Encargo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Call To Action WhatsApp VIP -->
+        <section class="custom-orders-section reveal" aria-label="Pedidos especiales">
+            <div class="contenedor custom-orders-card">
+                <div class="custom-orders-info">
+                    <h2>¿Buscas una combinación de colores o diseño a medida?</h2>
+                    <p>Tejemos piezas exclusivas para ocasiones memorables: bodas, aniversarios y regalos que perduran en el tiempo.</p>
+                </div>
+                <div class="custom-orders-cta">
+                    <a href="https://wa.me/{{ WHATSAPP_PHONE }}?text=Hola%20Artisan,%20deseo%20asesor%C3%ADa%20para%20un%20dise%C3%B1o%20artesanal%20personalizado" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                        Hablar con un Maestro Artesano
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include 'footer.html' %}
+</body>
+</html>

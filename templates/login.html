@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan - Ingreso</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-page">
+    {% include '_flash.html' %}
+    <div class="auth-container">
+      <div class="login-box reveal">
+        <h1>ARTISAN</h1>
+        <p>Inicia sesión para entrar</p>
+
+        <form action="/login" method="POST" class="registro-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="email" name="correo" placeholder="Correo" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit" class="boton-ver btn-block">ENTRAR</button>
+        </form>
+        <p class="registro-link">¿No tienes cuenta? <a href="/registro">Crea una aquí</a></p>
+      </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

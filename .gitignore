@@ -1,0 +1,93 @@
+# .gitignore - Archivos a ignorar en Git
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Flask
+instance/
+.webassets-cache
+
+# Base de datos (no incluir BD en repositorio)
+*.db
+*.sqlite
+*.sqlite3
+
+# Variables de entorno y secretos (NUNCA comprometer .env)
+.env
+.env*
+*.env
+backend.env
+env.md
+
+# Workflows (requiere token con scope workflow para push)
+.github/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+
+# Imágenes pesadas originales de cámara (>100MB ignoradas)
+static/img/*.jpg
+static/img/*.jpeg
+static/img/*.png
+static/img/productos/*.jpg
+static/img/productos/*.jpeg
+static/img/productos/*.png
+!static/img/*.webp
+!static/img/productos/*.webp
+!static/img/productos/.gitkeep
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Node
+node_modules/
+
+# Otros
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporal
+*.tmp
+temp/

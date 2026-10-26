@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.docker
+    volumes:
+      - ./static/img/productos:/app/static/img/productos
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  logs:
+
+networks:
+  default:
+    driver: bridge

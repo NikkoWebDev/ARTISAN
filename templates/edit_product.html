@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar producto - {{ p.nombre }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <main class="contenedor mt-40 reveal">
+        <div class="admin-caja">
+            <h2>Editar Producto</h2>
+            <form action="{{ url_for('admin.edit_product', id=p.id) }}" method="POST" enctype="multipart/form-data" class="form-grid">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="text" name="nombre" placeholder="Nombre" required value="{{ p.nombre }}">
+                <select name="categoria">
+                    {% for c in categorias %}
+                    <option value="{{ c.nombre }}" {% if p.categoria==c.nombre %}selected{% endif %}>{{ c.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <label class="small-text">Subproducto de (opcional):</label>
+                <select name="parent_id">
+                    <option value="">(ninguno)</option>
+                    {% for prod in productos %}
+                    <option value="{{ prod.id }}" {% if prod.id == p.parent_id %}selected{% endif %}>{{ prod.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="precio" placeholder="Precio (COP)" required value="{{ p.precio }}">
+                <textarea name="descripcion" placeholder="Características" class="span-2">{{ p.descripcion }}</textarea>
+                <div class="span-2 small-text">
+                    Fotos (dejar en blanco para no cambiar):<br>
+                    <input type="file" name="img1"> <input type="hidden" name="old_img1" value="{{ p.imagen_url }}"><br>
+                    <input type="file" name="img2"> <input type="hidden" name="old_img2" value="{{ p.img2 }}"><br>
+                    <input type="file" name="img3"> <input type="hidden" name="old_img3" value="{{ p.img3 }}">
+                </div>
+                <button type="submit" class="boton-pagar span-2">Actualizar</button>
+            </form>
+        </div>
+    </main>
+    {% include 'footer.html' %}
+</body>
+</html>

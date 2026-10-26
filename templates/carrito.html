@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Bolsa de Compras — Artisan</title>
+    <meta name="description" content="Revisa tu selección de piezas artesanales de autor antes de finalizar tu pedido.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
+</head>
+<body class="cart-page">
+    {% include 'header.html' %}
+
+    <main class="contenedor carrito-wrap reveal">
+        <header class="carrito-header text-center">
+            <span class="gold-subtitle">TU SELECCIÓN</span>
+            <h1 class="carrito-titulo">Bolsa de Compras</h1>
+            <p class="subtitulo">Piezas únicas reservadas temporalmente para ti</p>
+            <div class="heading-divider"></div>
+        </header>
+
+        {% if items %}
+        <div class="carrito-layout">
+            <!-- Columna Artículos -->
+            <section class="carrito-items-col" aria-label="Artículos en la bolsa">
+                <ul class="carrito-lista">
+                    {% for item in items %}
+                    <li class="carrito-item-card">
+                        <div class="carrito-item-media">
+                            <img src="{{ item.imagen_url if item.imagen_url else url_for('static', filename='img/IMG_20260121_150438.webp') }}" alt="{{ item.nombre }}" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                        </div>
+
+                        <div class="carrito-item-details">
+                            <h3 class="carrito-item-name">
+                                <a href="/producto/{{ item.id }}">{{ item.nombre }}</a>
+                            </h3>
+                            <p class="carrito-item-unit-price">${{ "{:,.0f}".format(item.precio) }} COP c/u</p>
+
+                            <div class="carrito-item-stepper-row">
+                                <form action="/carrito/update/{{ item.id }}" method="POST" class="stepper-form">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <label for="qty-{{ item.id }}" class="sr-only">Cantidad</label>
+                                    <div class="stepper-box">
+                                        <button type="button" class="stepper-btn" onclick="var inp = document.getElementById('qty-{{ item.id }}'); if(inp.value > 1) { inp.value = parseInt(inp.value)-1; inp.form.submit(); } else { document.getElementById('remove-form-{{ item.id }}').submit(); }">&minus;</button>
+                                        <input id="qty-{{ item.id }}" type="number" name="cantidad" value="{{ item.cantidad or 1 }}" min="1" max="99" class="cantidad-input stepper-input" onchange="this.form.submit();">
+                                        <button type="button" class="stepper-btn" onclick="var inp = document.getElementById('qty-{{ item.id }}'); inp.value = parseInt(inp.value)+1; inp.form.submit();">&plus;</button>
+                                    </div>
+                                </form>
+
+                                <form id="remove-form-{{ item.id }}" action="/carrito/remove/{{ item.id }}" method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn-eliminar-item" aria-label="Eliminar {{ item.nombre }}">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                        <span>Quitar</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="carrito-item-total">
+                            <span class="subtotal-label">Subtotal</span>
+                            <span class="subtotal-val">${{ "{:,.0f}".format(item.precio * (item.cantidad or 1)) }} COP</span>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="carrito-footer-actions">
+                    <a href="/lineaproductos" class="btn btn-outline btn-sm">&larr; Seguir Explorando el Catálogo</a>
+                    <form action="/carrito/clear" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-ghost btn-sm" onclick="return confirm('¿Seguro que deseas vaciar tu bolsa?');">Vaciar Bolsa</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Columna Resumen de Orden -->
+            <aside class="carrito-resumen-col" aria-label="Resumen de tu pedido">
+                <div class="resumen-card">
+                    <h2 class="resumen-titulo">Resumen del Pedido</h2>
+                    
+                    <div class="resumen-linea">
+                        <span>Subtotal de piezas</span>
+                        <span>${{ "{:,.0f}".format(total) if total is not none else '0' }} COP</span>
+                    </div>
+
+                    <div class="resumen-linea">
+                        <span>Envío estimado</span>
+                        <span class="text-gold">Coordinado vía WhatsApp</span>
+                    </div>
+
+                    <div class="resumen-divider"></div>
+
+                    <div class="resumen-linea resumen-total-linea">
+                        <span>Total</span>
+                        <span class="resumen-total-val">${{ "{:,.0f}".format(total) if total is not none else '0' }} COP</span>
+                    </div>
+
+                    <p class="resumen-taxes-note">Impuestos incluidos. Pago seguro por transferencia Bancolombia, Nequi, Daviplata o PSE.</p>
+
+                    <form action="{{ url_for('cart.checkout_whatsapp') }}" method="POST" class="mt-20">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-whatsapp btn-lg btn-block">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                            </svg>
+                            COMPLETAR PEDIDO POR WHATSAPP
+                        </button>
+                    </form>
+
+                    <div class="resumen-garantias">
+                        <div class="garantia-item">
+                            <span class="icon">✦</span>
+                            <span>Atención directa con el maestro artesano</span>
+                        </div>
+                        <div class="garantia-item">
+                            <span class="icon">✓</span>
+                            <span>Empaque de regalo de lujo incluido</span>
+                        </div>
+                        <div class="garantia-item">
+                            <span class="icon">📦</span>
+                            <span>Envíos a todo el territorio colombiano</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        {% else %}
+        <div class="carrito-vacio text-center">
+            <div class="vacio-icon" aria-hidden="true">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </div>
+            <h2>Tu bolsa de compras está vacía</h2>
+            <p>Aún no has añadido tesoros artesanales a tu selección. Explora nuestro catálogo y descubre piezas irrepetibles.</p>
+            <a href="/lineaproductos" class="btn btn-primary btn-lg" style="margin-top:24px;">Explorar el Catálogo</a>
+        </div>
+        {% endif %}
+    </main>
+
+    {% include 'footer.html' %}
+</body>
+</html>

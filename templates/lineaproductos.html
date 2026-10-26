@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if categoria_actual %}{{ categoria_actual }} — {% endif %}Catálogo Exclusivo | Artisan</title>
+    <meta name="description" content="Explora nuestra colección de alta bisutería en mostacilla y marroquinería de autor elaborada a mano en Colombia.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
+</head>
+<body class="catalog-page">
+    {% include 'header.html' %}
+
+    <main class="contenedor catalog-container reveal">
+        <!-- Encabezado Editorial del Catálogo -->
+        <header class="catalog-header text-center">
+            <span class="gold-subtitle">GALERÍA DE AUTOR</span>
+            <h1 class="titulo-seccion">
+                {% if categoria_actual %}{{ categoria_actual }}{% else %}Colección Completa{% endif %}
+            </h1>
+            <p class="subtitulo">
+                Piezas exclusivas tejidas a mano y trabajadas en cuero natural en San Agustín, Huila.
+            </p>
+            <div class="heading-divider"></div>
+        </header>
+
+        <!-- Barra de Filtros & Búsqueda Reactiva -->
+        <section class="catalog-controls" aria-label="Filtros del catálogo">
+            <!-- Chips de Categoría -->
+            <div class="category-chips-wrapper" role="tablist" aria-label="Filtrar por categoría">
+                <a href="/lineaproductos" class="category-chip {% if not categoria_actual %}is-active{% endif %}" role="tab" aria-selected="{% if not categoria_actual %}true{% else %}false{% endif %}">
+                    Todas las Piezas
+                </a>
+                {% for c in categorias %}
+                <a href="/lineaproductos?categoria={{ c.nombre }}" class="category-chip {% if categoria_actual == c.nombre %}is-active{% endif %}" role="tab" aria-selected="{% if categoria_actual == c.nombre %}true{% else %}false{% endif %}">
+                    {{ c.nombre }}
+                </a>
+                {% endfor %}
+            </div>
+
+            <!-- Buscador en tiempo real & Contador -->
+            <div class="catalog-search-bar">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="search" id="catalogo-search" placeholder="Buscar por nombre, color o técnica..." aria-label="Buscar productos">
+                </div>
+                <div class="catalog-counter">
+                    <span id="catalogo-count">{{ productos|length }}</span> piezas únicas
+                </div>
+            </div>
+        </section>
+
+        <!-- Grid de Productos -->
+        <section id="catalogo-grid" class="grilla-productos" aria-label="Piezas disponibles">
+            {% for p in productos %}
+            <article class="producto producto-card" data-nombre="{{ p.nombre }}" data-categoria="{{ p.categoria }}">
+                <div class="producto-img-container">
+                    <a href="/producto/{{ p.id }}" class="producto-img-link" aria-label="Ver detalles de {{ p.nombre }}">
+                        <img src="{{ p.imagen_url }}?v={{ cache_buster() }}" alt="{{ p.nombre }}" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                    </a>
+                    {% if p.categoria %}
+                    <span class="producto-badge">{{ p.categoria }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="producto-body">
+                    <span class="producto-artisan-label">Pieza de Autor</span>
+                    <h3 class="producto-title">
+                        <a href="/producto/{{ p.id }}">{{ p.nombre }}</a>
+                    </h3>
+                    <p class="producto-precio">${{ "{:,.0f}".format(p.precio) }} COP</p>
+
+                    <div class="producto-actions">
+                        <button type="button" class="btn btn-primary btn-sm btn-quick-add" data-add-to-cart="{{ p.id }}" data-quantity="1" aria-label="Agregar {{ p.nombre }} a la bolsa">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span>Agregar</span>
+                        </button>
+                        <a href="/producto/{{ p.id }}" class="btn btn-outline btn-sm">Ver Detalle</a>
+                    </div>
+                </div>
+            </article>
+            {% else %}
+            <div class="empty-catalog text-center span-2">
+                <h3>No hay productos en esta categoría por el momento</h3>
+                <p>Nuestros artesanos están preparando nuevas piezas exclusivas.</p>
+                <a href="/lineaproductos" class="btn btn-primary btn-sm" style="margin-top:16px;">Ver Todas las Piezas</a>
+            </div>
+            {% endfor %}
+        </section>
+
+        <!-- Mensaje de Búsqueda Vacía (Reactivo) -->
+        <div id="catalogo-empty-search" class="catalog-empty-search text-center" style="display: none;">
+            <div class="empty-icon" aria-hidden="true">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <h3>Sin coincidencias para tu búsqueda</h3>
+            <p>Intenta con otros términos o explora las categorías en los filtros superiores.</p>
+            <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('catalogo-search').value=''; document.getElementById('catalogo-search').dispatchEvent(new Event('input'));">
+                Limpiar Búsqueda
+            </button>
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+</body>
+</html>
