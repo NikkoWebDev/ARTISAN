@@ -1,4 +1,5 @@
 import os
+import shutil
 import sqlite3
 from urllib.parse import urlparse
 
@@ -50,10 +51,21 @@ def connect_db():
         conn.autocommit = False
         return DatabaseConnection(conn, is_postgres=True)
 
-    sqlite_path = os.environ.get('SQLITE_PATH', 'database.db')
-    sqlite_dir = os.path.dirname(sqlite_path)
-    if sqlite_dir:
-        os.makedirs(sqlite_dir, exist_ok=True)
+    if os.environ.get('VERCEL') == '1':
+        sqlite_path = os.environ.get('SQLITE_PATH', '/tmp/database.db')
+        sqlite_dir = os.path.dirname(sqlite_path)
+        if sqlite_dir:
+            os.makedirs(sqlite_dir, exist_ok=True)
+        if not os.path.exists(sqlite_path):
+            base_db = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database.db')
+            if os.path.exists(base_db):
+                shutil.copy2(base_db, sqlite_path)
+    else:
+        sqlite_path = os.environ.get('SQLITE_PATH', 'database.db')
+        sqlite_dir = os.path.dirname(sqlite_path)
+        if sqlite_dir:
+            os.makedirs(sqlite_dir, exist_ok=True)
+
     conn = sqlite3.connect(sqlite_path)
     conn.row_factory = sqlite3.Row
     conn.execute('PRAGMA foreign_keys = ON')
