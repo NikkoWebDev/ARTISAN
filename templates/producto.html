@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ p.nombre }} — Artisan Lujo Artesanal</title>
+    <title>{{ p.nombre }} — Artisan Studio San Agustín</title>
     <meta name="description" content="{{ p.nombre }} - Pieza artesanal de autor elaborada a mano en San Agustín, Huila.">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
 </head>
@@ -11,7 +11,7 @@
     {% include 'header.html' %}
 
     <main class="contenedor producto-detalle-wrap reveal">
-        <!-- Breadcrumbs -->
+        <!-- Breadcrumbs Minimalistas -->
         <nav class="breadcrumbs" aria-label="Ruta de navegación">
             <a href="/index">Inicio</a>
             <span class="breadcrumb-separator">/</span>
@@ -25,11 +25,11 @@
         </nav>
 
         <div class="producto-detalle">
-            <!-- Columna Izquierda: Galería Interactiva -->
+            <!-- Columna Izquierda: Galería Visual Dominante -->
             <div class="galeria-seccion">
                 <div class="galeria-principal-wrapper">
                     <img src="{{ p.imagen_url }}?v={{ cache_buster() }}" alt="{{ p.nombre }}" class="principal-img" loading="eager" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
-                    <span class="galeria-badge">✦ Obra de Autor</span>
+                    <span class="galeria-badge">Pieza Única</span>
                 </div>
 
                 {% set extras = [] %}
@@ -38,7 +38,7 @@
                 {% if p.img3 %}{% set extras = extras + [p.img3] %}{% endif %}
 
                 {% if extras|length > 1 %}
-                <div class="extra-images" role="tablist" aria-label="Miniaturas del producto">
+                <div class="extra-images" role="tablist" aria-label="Miniaturas de la pieza">
                     {% for img in extras %}
                     <button type="button" class="thumb-btn {% if loop.first %}is-active{% endif %}" aria-label="Ver imagen {{ loop.index }} de {{ p.nombre }}">
                         <img src="{{ img }}?v={{ cache_buster() }}" alt="{{ p.nombre }} miniatura {{ loop.index }}" class="thumb-img {% if loop.first %}is-active{% endif %}" loading="lazy" onerror="this.style.display='none'">
@@ -48,13 +48,13 @@
                 {% endif %}
             </div>
 
-            <!-- Columna Derecha: Información y Compra -->
+            <!-- Columna Derecha: Información Serena & Compra -->
             <div class="info-producto">
                 <div class="info-producto-header">
                     {% if p.categoria %}
                     <span class="producto-cat-badge">{{ p.categoria }}</span>
                     {% endif %}
-                    <span class="stock-status">✓ Disponible en Taller</span>
+                    <span class="stock-status">Disponible en Atelier</span>
                 </div>
 
                 <h1 class="producto-nombre">{{ p.nombre }}</h1>
@@ -63,7 +63,7 @@
                     <span class="iva-incluido">Impuestos incluidos</span>
                 </div>
 
-                <!-- Acordeones / Ficha Técnica Limpia -->
+                <!-- Acordeones / Ficha Técnica Editorial -->
                 <div class="producto-accordion-group">
                     <details class="acordeon" open>
                         <summary>Detalles & Confección</summary>
@@ -97,7 +97,7 @@
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         
                         <div class="selector-cantidad-row">
-                            <label for="cantidad" class="cantidad-label">Cantidad:</label>
+                            <label for="cantidad" class="cantidad-label">CANTIDAD:</label>
                             <div class="stepper-box">
                                 <button type="button" class="stepper-btn" id="qty-minus" aria-label="Disminuir cantidad">&minus;</button>
                                 <input id="cantidad" type="number" name="cantidad" value="1" min="1" max="99" class="cantidad-input" aria-label="Cantidad a comprar">
@@ -107,25 +107,25 @@
 
                         <div class="botones-compra-grid">
                             <button type="submit" class="btn btn-primary btn-lg btn-block btn-add-bag">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                                     <line x1="3" y1="6" x2="21" y2="6"></line>
                                     <path d="M16 10a4 4 0 0 1-8 0"></path>
                                 </svg>
-                                AGREGAR A LA BOLSA
+                                AÑADIR A LA BOLSA
                             </button>
 
                             <button type="button" id="whatsapp-buy" class="btn btn-whatsapp btn-lg btn-block">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                                 </svg>
-                                COMPRAR POR WHATSAPP
+                                PEDIR POR WHATSAPP
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Garantías Rápidas -->
+                <!-- Garantías Rápidas Minimalistas -->
                 <div class="product-guarantees">
                     <div class="guarantee-badge">
                         <span class="icon">✦</span>
@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="mt-20">
-                    <a href="/lineaproductos" class="volver-tienda">&larr; Explorar más piezas en catálogo</a>
+                    <a href="/lineaproductos" class="volver-tienda">&larr; Volver al catálogo de piezas</a>
                 </div>
             </div>
         </div>
@@ -168,8 +168,8 @@
                         <h3 class="producto-title"><a href="/producto/{{ s.id }}">{{ s.nombre }}</a></h3>
                         <p class="producto-precio">${{ "{:,.0f}".format(s.precio) }} COP</p>
                         <div class="producto-actions">
-                            <button type="button" class="btn btn-primary btn-sm btn-quick-add" data-add-to-cart="{{ s.id }}">Agregar +</button>
-                            <a href="/producto/{{ s.id }}" class="btn btn-outline btn-sm">Ver Detalle</a>
+                            <button type="button" class="btn btn-primary btn-sm btn-quick-add" data-add-to-cart="{{ s.id }}">Añadir</button>
+                            <a href="/producto/{{ s.id }}" class="btn btn-outline btn-sm">Detalles</a>
                         </div>
                     </div>
                 </article>
