@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bolsa de Compras — Artisan Studio</title>
     <meta name="description" content="Revisa tu selección de piezas artesanales de autor antes de finalizar tu pedido.">
+    {% set seo_noindex = true %}
+    {% include '_head_meta.html' %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
 </head>
 <body class="cart-page">

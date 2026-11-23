@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARTISAN — Studio San Agustín | Joyería Textil & Cuero de Autor</title>
-    <meta name="description" content="Joyería textil contemporánea tejida en mostacilla y marroquinería de autor elaborada a mano en San Agustín, Huila. Minimalismo editorial y calma táctil.">
+    {% set seo_title = 'ARTISAN — Joyería tejida a mano y marroquinería de autor | San Agustín, Huila' %}
+    {% set seo_desc = 'Joyería textil en mostacilla y marroquinería de autor hechas a mano en San Agustín, Huila. Envíos a toda Colombia. Pedidos por WhatsApp.' %}
+    <title>{{ seo_title }}</title>
+    <meta name="description" content="{{ seo_desc }}">
+    {% include '_head_meta.html' %}
+    <script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"Organization","name":"ARTISAN Studio","url":site_url(),"logo":site_url() ~ url_for('static', filename='img/favicon.svg'),"address":{"@type":"PostalAddress","addressLocality":"San Agustín","addressRegion":"Huila","addressCountry":"CO"},"contactPoint":{"@type":"ContactPoint","contactType":"customer service","telephone":"+" ~ WHATSAPP_PHONE,"availableLanguage":"es"}}|tojson }}</script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
 </head>
 <body class="home-page">

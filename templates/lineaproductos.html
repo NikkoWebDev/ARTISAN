@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if categoria_actual %}{{ categoria_actual }} — {% endif %}Catálogo Exclusivo | Artisan</title>
-    <meta name="description" content="Explora nuestra colección de alta bisutería en mostacilla y marroquinería de autor elaborada a mano en Colombia.">
+    {% set seo_title = (categoria_actual ~ ' — ' if categoria_actual else '') ~ 'Catálogo | Artisan' %}
+    {% set seo_desc = 'Explora la colección de joyería en mostacilla y marroquinería de autor hechas a mano en San Agustín, Huila.' %}
+    <title>{{ seo_title }}</title>
+    <meta name="description" content="{{ seo_desc }}">
+    {% include '_head_meta.html' %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
 </head>
 <body class="catalog-page">
