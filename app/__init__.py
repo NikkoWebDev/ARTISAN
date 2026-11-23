@@ -1,13 +1,11 @@
 import os
 import secrets
 import time
-from flask import Flask, session
+from flask import Flask, request, session
 import markupsafe
-from app.config import Config
+from app.config import Config, POLITICA, SITE_URL, WHATSAPP_PHONE
 from app.extensions import limiter
 from app.db import close_db
-
-WHATSAPP_PHONE = os.environ.get('WHATSAPP_PHONE', '573123580705').lstrip('+').strip()
 
 _proj_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -30,6 +28,17 @@ def create_app():
         if v else ''
     )
 
+    def _thumb(url):
+        """Devuelve la miniatura *_thumb.webp de una imagen de producto si existe en disco."""
+        if not url or not url.endswith('.webp') or url.endswith('_thumb.webp'):
+            return url
+        candidate = url[:-5] + '_thumb.webp'
+        if os.path.exists(os.path.join(_proj_root, candidate.lstrip('/'))):
+            return candidate
+        return url
+
+    app.jinja_env.filters['thumb'] = _thumb
+
     @app.before_request
     def ensure_csrf():
         if 'csrf_token' not in session:
@@ -46,6 +55,8 @@ def create_app():
 
         return {
             'WHATSAPP_PHONE': WHATSAPP_PHONE,
+            'POLITICA': POLITICA,
+            'site_url': lambda: SITE_URL or request.host_url.rstrip('/'),
             'csrf_token': lambda: session.get('csrf_token', ''),
             'cache_buster': _cache_buster,
         }
