@@ -2,7 +2,23 @@
  * Artisan - App UI Scripts
  * Micro-interacciones de lujo, buscador reactivo, galería interactiva y animaciones a 60fps
  */
+// Fallback de imágenes rotas (reemplaza los onerror inline; compatible con CSP)
+document.addEventListener('error', function(e) {
+    const img = e.target;
+    if (!(img instanceof HTMLImageElement)) return;
+    if (img.hasAttribute('data-hide-on-error')) { img.style.display = 'none'; return; }
+    const fallback = '/static/img/IMG_20260121_150438_1600.webp';
+    if (!img.src.endsWith(fallback)) img.src = fallback;
+}, true);
+
 document.addEventListener('DOMContentLoaded', function() {
+    // 0. Imágenes que fallaron antes de registrar el listener
+    document.querySelectorAll('img').forEach(function(img) {
+        if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) {
+            img.dispatchEvent(new Event('error'));
+        }
+    });
+
     // 1. Mobile Menu Toggle
     const menuBtn = document.querySelector('.menu-toggle');
     const menuNav = document.getElementById('main-menu');

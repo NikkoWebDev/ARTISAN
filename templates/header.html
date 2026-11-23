@@ -1,7 +1,7 @@
 <!-- Barra superior de lujo editorial minimalista estilo Sasai -->
 <div class="top-banner" role="complementary" aria-label="Beneficios exclusivos">
     <div class="top-banner-inner">
-        <span class="top-banner-text">ARTISAN STUDIO — PIEZAS DE AUTOR HECHAS A MANO EN SAN AGUSTÍN • ENVÍOS A TODA COLOMBIA</span>
+        <span class="top-banner-text">ARTISAN STUDIO — HECHO A MANO EN SAN AGUSTÍN • {{ POLITICA.envio_cobertura|upper }} • ENTREGA EN MÁXIMO 6 DÍAS</span>
     </div>
 </div>
 
@@ -16,7 +16,7 @@
         </button>
 
         <div class="header-brand">
-            <a href="/index" class="logo-texto" aria-label="ARTISAN - Regresar a inicio">
+            <a href="/" class="logo-texto" aria-label="ARTISAN - Regresar a inicio">
                 <span class="brand-name">ARTISAN</span>
                 <span class="brand-tagline">STUDIO — SAN AGUSTÍN</span>
             </a>
@@ -24,10 +24,10 @@
 
         <nav class="zona-menu" id="main-menu" aria-label="Navegación principal">
             <ul>
-                <li><a href="/index" class="nav-link">Inicio</a></li>
+                <li><a href="/" class="nav-link">Inicio</a></li>
+                <li><a href="/#manigua" class="nav-link">Nuestra historia</a></li>
                 <li><a href="/lineaproductos" class="nav-link">Catálogo</a></li>
-                <li><a href="/lineaproductos?categoria=Bisutería" class="nav-link">Bisutería</a></li>
-                <li><a href="/lineaproductos?categoria=Marroquinería" class="nav-link">Marroquinería</a></li>
+                <li><a href="/#visitanos" class="nav-link">Visítanos</a></li>
                 {% if session.get('rol') == 'admin' %}
                 <li><a href="/admin" class="nav-link nav-admin">Admin</a></li>
                 {% endif %}

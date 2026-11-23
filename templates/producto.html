@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ p.nombre }} — Artisan Studio San Agustín</title>
-    <meta name="description" content="{{ p.nombre }} - Pieza artesanal de autor elaborada a mano en San Agustín, Huila.">
+    {% set seo_title = p.nombre ~ ' — Artisan Studio San Agustín' %}
+    {% set seo_desc = (p.descripcion or (p.nombre ~ ' — pieza artesanal de autor elaborada a mano en San Agustín, Huila.'))|striptags|truncate(155, True) %}
+    {% set seo_image = p.imagen_url %}
+    {% set seo_type = 'product' %}
+    <title>{{ seo_title }}</title>
+    <meta name="description" content="{{ seo_desc }}">
+    {% include '_head_meta.html' %}
+    <script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"Product","name":p.nombre,"description":seo_desc,"image":[site_url() ~ p.imagen_url] if p.imagen_url else [],"brand":{"@type":"Brand","name":"ARTISAN"},"offers":{"@type":"Offer","priceCurrency":"COP","price":p.precio,"availability":"https://schema.org/InStock","url":site_url() ~ request.path}}|tojson }}</script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
 </head>
 <body class="product-page">
@@ -13,7 +19,7 @@
     <main class="contenedor producto-detalle-wrap reveal">
         <!-- Breadcrumbs Minimalistas -->
         <nav class="breadcrumbs" aria-label="Ruta de navegación">
-            <a href="/index">Inicio</a>
+            <a href="/">Inicio</a>
             <span class="breadcrumb-separator">/</span>
             <a href="/lineaproductos">Catálogo</a>
             {% if p.categoria %}
@@ -28,7 +34,7 @@
             <!-- Columna Izquierda: Galería Visual Dominante -->
             <div class="galeria-seccion">
                 <div class="galeria-principal-wrapper">
-                    <img src="{{ p.imagen_url }}?v={{ cache_buster() }}" alt="{{ p.nombre }}" class="principal-img" loading="eager" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                    <img src="{{ p.imagen_url }}?v={{ cache_buster() }}" alt="{{ p.nombre }}" class="principal-img" loading="eager">
                     <span class="galeria-badge">Pieza Única</span>
                 </div>
 
@@ -41,7 +47,7 @@
                 <div class="extra-images" role="tablist" aria-label="Miniaturas de la pieza">
                     {% for img in extras %}
                     <button type="button" class="thumb-btn {% if loop.first %}is-active{% endif %}" aria-label="Ver imagen {{ loop.index }} de {{ p.nombre }}">
-                        <img src="{{ img }}?v={{ cache_buster() }}" alt="{{ p.nombre }} miniatura {{ loop.index }}" class="thumb-img {% if loop.first %}is-active{% endif %}" loading="lazy" onerror="this.style.display='none'">
+                        <img src="{{ img }}?v={{ cache_buster() }}" alt="{{ p.nombre }} miniatura {{ loop.index }}" class="thumb-img {% if loop.first %}is-active{% endif %}" loading="lazy" data-hide-on-error>
                     </button>
                     {% endfor %}
                 </div>
@@ -84,9 +90,11 @@
                     </details>
 
                     <details class="acordeon">
-                        <summary>Envíos & Empaque</summary>
+                        <summary>Envíos, pagos y cambios</summary>
                         <div class="acordeon-content">
-                            <p>Cada pieza se entrega en nuestro empaque artesanal de regalo con tarjeta de autenticidad. Envíos asegurados a todo el territorio colombiano (3-5 días hábiles).</p>
+                            <p>{{ POLITICA.envio_cobertura }}. {{ POLITICA.envio_plazo }} {{ POLITICA.envio_costo }}</p>
+                            <p>{{ POLITICA.pagos }}</p>
+                            <p>{{ POLITICA.cambios }}</p>
                         </div>
                     </details>
                 </div>
@@ -136,8 +144,8 @@
                         <span>Empaque protector de regalo</span>
                     </div>
                     <div class="guarantee-badge">
-                        <span class="icon">↺</span>
-                        <span>Cambios garantizados</span>
+                        <span class="icon">✈</span>
+                        <span>{{ POLITICA.envio_plazo }}</span>
                     </div>
                 </div>
 
@@ -161,7 +169,7 @@
                 <article class="producto producto-card">
                     <div class="producto-img-container">
                         <a href="/producto/{{ s.id }}">
-                            <img src="{{ s.imagen_url }}" alt="{{ s.nombre }}" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                            <img src="{{ s.imagen_url }}" alt="{{ s.nombre }}" loading="lazy">
                         </a>
                     </div>
                     <div class="producto-body">

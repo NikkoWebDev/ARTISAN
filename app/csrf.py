@@ -37,6 +37,6 @@ def csrf_required(f):
             if request.is_json or request.path.startswith('/api/'):
                 from flask import jsonify
                 return jsonify({'error': 'Token CSRF inválido o ausente'}), 403
-            return redirect(request.referrer or url_for('shop.index'))
+            return redirect(request.referrer or url_for('shop.home'))
         return f(*args, **kwargs)
     return wrapper

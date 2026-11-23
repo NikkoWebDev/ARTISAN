@@ -28,7 +28,7 @@ def login():
             session.update({'user_id': user['id'], 'rol': user['rol'], 'nombre': user['nombre']})
             session.permanent = True
             flash('Bienvenido, has iniciado sesión correctamente.', 'success')
-            return redirect(url_for('shop.index'))
+            return redirect(url_for('shop.home'))
 
         flash('Correo o contraseña incorrectos.', 'error')
     return render_template('login.html')

@@ -84,6 +84,20 @@ def table_columns(connection, table_name):
 
 
 
+_SCHEMA_READY = set()
+
+
+def ensure_schema_once(connection):
+    """Ejecuta ensure_schema una sola vez por proceso y base de datos (evita DDL en cada petición)."""
+    key = DATABASE_URL if using_postgres() else os.path.abspath(
+        os.environ.get('SQLITE_PATH', 'database.db')
+    ) + ('|vercel' if os.environ.get('VERCEL') == '1' else '')
+    if key in _SCHEMA_READY:
+        return
+    ensure_schema(connection)
+    _SCHEMA_READY.add(key)
+
+
 def ensure_schema(connection):
     if using_postgres():
         connection.execute('''
@@ -190,7 +204,7 @@ def ensure_schema(connection):
     if 'total' not in existing_orders:
         connection.execute('ALTER TABLE pedidos ADD COLUMN total REAL')
     if 'estado' not in existing_orders:
-        connection.execute('ALTER TABLE pedidos ADD COLUMN estado TEXT DEFAULT "pendiente"')
+        connection.execute("ALTER TABLE pedidos ADD COLUMN estado TEXT DEFAULT 'pendiente'")
     if 'fecha_creacion' not in existing_orders:
         connection.execute('ALTER TABLE pedidos ADD COLUMN fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP')
 

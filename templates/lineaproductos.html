@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if categoria_actual %}{{ categoria_actual }} — {% endif %}Catálogo Exclusivo | Artisan</title>
-    <meta name="description" content="Explora nuestra colección de alta bisutería en mostacilla y marroquinería de autor elaborada a mano en Colombia.">
+    {% set seo_title = (categoria_actual ~ ' — ' if categoria_actual else '') ~ 'Catálogo | Artisan' %}
+    {% set seo_desc = 'Explora la colección de joyería en mostacilla y marroquinería de autor hechas a mano en San Agustín, Huila.' %}
+    <title>{{ seo_title }}</title>
+    <meta name="description" content="{{ seo_desc }}">
+    {% include '_head_meta.html' %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
 </head>
 <body class="catalog-page">
@@ -58,7 +61,7 @@
             <article class="producto producto-card" data-nombre="{{ p.nombre }}" data-categoria="{{ p.categoria }}">
                 <div class="producto-img-container">
                     <a href="/producto/{{ p.id }}" class="producto-img-link" aria-label="Ver detalles de {{ p.nombre }}">
-                        <img src="{{ p.imagen_url }}?v={{ cache_buster() }}" alt="{{ p.nombre }}" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                        <img src="{{ p.imagen_url|thumb }}" alt="{{ p.nombre }}" width="400" height="531" loading="{{ 'eager' if loop.index <= 4 else 'lazy' }}" decoding="async">
                     </a>
                     {% if p.categoria %}
                     <span class="producto-badge">{{ p.categoria }}</span>

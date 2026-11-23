@@ -18,7 +18,7 @@ from flask import (
     url_for,
 )
 
-from app import WHATSAPP_PHONE
+from app.config import WHATSAPP_PHONE
 from app.csrf import validate_csrf
 from app.db import get_db
 from app.extensions import limiter

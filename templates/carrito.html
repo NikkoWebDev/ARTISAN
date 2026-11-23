@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bolsa de Compras — Artisan Studio</title>
     <meta name="description" content="Revisa tu selección de piezas artesanales de autor antes de finalizar tu pedido.">
+    {% set seo_noindex = true %}
+    {% include '_head_meta.html' %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_buster() }}">
 </head>
 <body class="cart-page">
@@ -26,7 +28,7 @@
                     {% for item in items %}
                     <li class="carrito-item-card">
                         <div class="carrito-item-media">
-                            <img src="{{ item.imagen_url if item.imagen_url else url_for('static', filename='img/IMG_20260121_150438.webp') }}" alt="{{ item.nombre }}" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                            <img src="{{ (item.imagen_url|thumb) if item.imagen_url else url_for('static', filename='img/IMG_20260121_150438.webp') }}" alt="{{ item.nombre }}" loading="lazy">
                         </div>
 
                         <div class="carrito-item-details">
@@ -88,7 +90,7 @@
 
                     <div class="resumen-linea">
                         <span>Envío estimado</span>
-                        <span class="text-gold">Coordinado vía WhatsApp</span>
+                        <span class="text-gold">Se confirma por WhatsApp (no incluido)</span>
                     </div>
 
                     <div class="resumen-divider"></div>
@@ -121,7 +123,7 @@
                         </div>
                         <div class="garantia-item">
                             <span class="icon">📦</span>
-                            <span>Envíos asegurados a todo el territorio nacional</span>
+                            <span>{{ POLITICA.envio_cobertura }}. {{ POLITICA.envio_plazo }}</span>
                         </div>
                     </div>
                 </div>
