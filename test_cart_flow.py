@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 import markupsafe
 import pytest
@@ -149,7 +150,7 @@ def test_html_cart_guest_views_and_add(client):
 
 def test_guest_can_add_subproduct_variant(client):
     """BUG-01: Verify subproducts (parent_id IS NOT NULL) can be added and purchased."""
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(os.environ.get('SQLITE_PATH', 'database.db'))
     conn.row_factory = sqlite3.Row
     sub = conn.execute('SELECT * FROM productos WHERE parent_id IS NOT NULL LIMIT 1').fetchone()
     if not sub:
@@ -214,7 +215,7 @@ def test_guest_checkout_whatsapp(client):
     assert cart_res.get_json()['count'] == 0
 
     # Verify order was saved in database with usuario_id = None
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(os.environ.get('SQLITE_PATH', 'database.db'))
     conn.row_factory = sqlite3.Row
     row = conn.execute(
         'SELECT * FROM pedidos WHERE numero_orden = ?',

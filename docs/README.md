@@ -21,7 +21,9 @@ Documentación técnica y funcional de la tienda **Artisan**. Describe la aplica
 | 9 | [Operación y mantenimiento](09-operacion-mantenimiento.md) | Runbook, respaldos, pruebas, problemas conocidos y roadmap. | Soporte / DevOps |
 | 10 | [Referencia de código](10-referencia-codigo.md) | Explicación archivo por archivo y función por función. | Desarrollo |
 | 11 | [Interfaz UI](11-interfaz-ui.md) | Sistema de diseño, componentes, JavaScript y accesibilidad. | Diseño / Frontend |
-| 12 | [Inventario de archivos](12-inventario-archivos.md) | Qué es cada archivo y qué se incluye en `artisan.zip`. | Todos |
+| 12 | [Inventario de archivos](12-inventario-archivos.md) | Qué es cada archivo y qué se incluye en `artisan.zip`. ⚠️ Desactualizado. | Todos |
+| 13 | [Grafo del proyecto](13-grafo-proyecto.md) | Dependencias entre archivos, rutas, plantillas y JS. Tabla "quiero X, toco Y". | Desarrollo / IA |
+| 14 | [Estado y pendientes](14-estado-draft-y-pendientes.md) | Qué es draft, riesgos con línea exacta, backlog priorizado y decisiones pendientes. | Desarrollo / Producto |
 
 ---
 
