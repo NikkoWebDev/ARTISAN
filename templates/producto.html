@@ -90,9 +90,11 @@
                     </details>
 
                     <details class="acordeon">
-                        <summary>Envíos & Empaque</summary>
+                        <summary>Envíos, pagos y cambios</summary>
                         <div class="acordeon-content">
-                            <p>Cada pieza se entrega en nuestro empaque artesanal de regalo con tarjeta de autenticidad. Envíos asegurados a todo el territorio colombiano (3-5 días hábiles).</p>
+                            <p>{{ POLITICA.envio_cobertura }}. {{ POLITICA.envio_plazo }} {{ POLITICA.envio_costo }}</p>
+                            <p>{{ POLITICA.pagos }}</p>
+                            <p>{{ POLITICA.cambios }}</p>
                         </div>
                     </details>
                 </div>
@@ -142,8 +144,8 @@
                         <span>Empaque protector de regalo</span>
                     </div>
                     <div class="guarantee-badge">
-                        <span class="icon">↺</span>
-                        <span>Cambios garantizados</span>
+                        <span class="icon">✈</span>
+                        <span>{{ POLITICA.envio_plazo }}</span>
                     </div>
                 </div>
 

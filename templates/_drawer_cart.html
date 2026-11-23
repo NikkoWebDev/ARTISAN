@@ -15,19 +15,15 @@
         </button>
     </div>
 
-    <!-- Barra de progreso para Envío Gratis -->
     <div class="shipping-progress-box">
         <div class="shipping-progress-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <rect x="1" y="3" width="15" height="13"></rect>
                 <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                <circle cx="5.500" cy="18.500" r="2.500"></circle>
+                <circle cx="18.500" cy="18.500" r="2.500"></circle>
             </svg>
-            <span id="shipping-progress-text">Envíos asegurados a todo Colombia</span>
-        </div>
-        <div class="shipping-bar-track" aria-hidden="true">
-            <div id="shipping-progress-bar" class="shipping-bar-fill" style="width: 0%;"></div>
+            <span>{{ POLITICA.envio_cobertura }}. {{ POLITICA.envio_plazo }}</span>
         </div>
     </div>
 
@@ -57,7 +53,7 @@
             <span>Subtotal estimado</span>
             <span id="drawer-cart-subtotal" class="drawer-price-highlight">$0 COP</span>
         </div>
-        <p class="drawer-shipping-note">Impuestos incluidos • Envío coordinado directamente por WhatsApp</p>
+        <p class="drawer-shipping-note">Envío no incluido: se confirma por WhatsApp. Sin pago contra entrega.</p>
 
         <div class="drawer-actions">
             <a id="drawer-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-block">
@@ -69,7 +65,7 @@
         <div class="drawer-trust-badges">
             <span class="trust-badge-item">Pieza Única</span>
             <span class="trust-badge-item">Empaque de Autor</span>
-            <span class="trust-badge-item">Envío Asegurado</span>
+            <span class="trust-badge-item">Entrega en máx. 6 días</span>
         </div>
     </div>
 </aside>

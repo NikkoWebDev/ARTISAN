@@ -13,7 +13,6 @@
         CLEAR: '/api/cart/clear'
     };
 
-    const FREE_SHIPPING_THRESHOLD = 150000; // $150.000 COP para envío gratis
 
     function formatCOP(amount) {
         const num = Math.round(Number(amount) || 0);
@@ -49,8 +48,6 @@
             this.drawerFooter = document.getElementById('drawer-cart-footer');
             this.subtotalEl = document.getElementById('drawer-cart-subtotal');
             this.countBadge = document.getElementById('drawer-item-count');
-            this.shippingText = document.getElementById('shipping-progress-text');
-            this.shippingBar = document.getElementById('shipping-progress-bar');
             this.whatsappBtn = document.getElementById('drawer-whatsapp-btn');
             this.headerBadges = document.querySelectorAll('.cart-badge-count, #cart-count-badge');
         },
@@ -379,21 +376,6 @@
             // Actualizar total en subtotal
             if (this.subtotalEl) {
                 this.subtotalEl.textContent = formatCOP(total);
-            }
-
-            // Actualizar barra de envío gratis
-            if (this.shippingText && this.shippingBar) {
-                if (total >= FREE_SHIPPING_THRESHOLD) {
-                    this.shippingText.innerHTML = '<strong>¡Felicitaciones!</strong> Tienes Envío Gratis a Colombia';
-                    this.shippingBar.style.width = '100%';
-                    this.shippingBar.classList.add('is-complete');
-                } else {
-                    const remaining = FREE_SHIPPING_THRESHOLD - total;
-                    const pct = Math.min(100, Math.round((total / FREE_SHIPPING_THRESHOLD) * 100));
-                    this.shippingText.innerHTML = `Faltan <strong>${formatCOP(remaining)}</strong> para <strong>Envío Gratis</strong>`;
-                    this.shippingBar.style.width = pct + '%';
-                    this.shippingBar.classList.remove('is-complete');
-                }
             }
 
             // Estado vacío vs lista poblada
