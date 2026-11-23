@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, Response, flash, jsonify, redirect, render_template, request, url_for
 
 from app.db import get_db
 
@@ -11,15 +11,47 @@ shop_bp = Blueprint('shop', __name__)
 
 @shop_bp.route('/')
 def home():
-    return redirect(url_for('shop.index'))
+    db = get_db()
+    prods = db.execute(
+        'SELECT id, nombre, categoria, precio, imagen_url FROM productos '
+        'WHERE parent_id IS NULL ORDER BY id DESC LIMIT 8'
+    ).fetchall()
+    return render_template('index.html', productos=prods)
 
 
 @shop_bp.route('/index')
 def index():
+    return redirect(url_for('shop.home'), code=301)
+
+
+@shop_bp.route('/robots.txt')
+def robots():
+    base = request.host_url.rstrip('/')
+    from app.config import SITE_URL
+    base = SITE_URL or base
+    body = (
+        'User-agent: *\n'
+        'Disallow: /admin\n'
+        'Disallow: /carrito\n'
+        'Disallow: /api/\n'
+        'Disallow: /login\n'
+        'Disallow: /registro\n'
+        f'Sitemap: {base}/sitemap.xml\n'
+    )
+    return Response(body, mimetype='text/plain')
+
+
+@shop_bp.route('/sitemap.xml')
+def sitemap():
+    from app.config import SITE_URL
+    base = SITE_URL or request.host_url.rstrip('/')
     db = get_db()
-    cats = db.execute('SELECT * FROM categorias').fetchall()
-    prods = db.execute('SELECT * FROM productos WHERE parent_id IS NULL ORDER BY id DESC LIMIT 8').fetchall()
-    return render_template('index.html', categorias=cats, productos=prods)
+    ids = db.execute('SELECT id FROM productos WHERE parent_id IS NULL ORDER BY id').fetchall()
+    urls = [f'{base}/', f'{base}/lineaproductos'] + [f'{base}/producto/{r["id"]}' for r in ids]
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    xml += [f'  <url><loc>{u}</loc></url>' for u in urls]
+    xml.append('</urlset>')
+    return Response('\n'.join(xml), mimetype='application/xml')
 
 
 @shop_bp.route('/lineaproductos')
