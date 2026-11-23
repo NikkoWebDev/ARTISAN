@@ -159,3 +159,24 @@ No son técnicas. El modelo no debe decidirlas por su cuenta.
 ---
 
 **Anterior:** [13 · Grafo del proyecto](13-grafo-proyecto.md) · **Índice:** [README](README.md)
+
+---
+
+## 8. Avance en la rama `pulido-home`
+
+Hecho (commits pequeños, verificados con `test_cart_flow.py` sobre copia de `database.db`):
+
+- Home en `/` (301 desde `/index`), `robots.txt`, `sitemap.xml`, favicon SVG, canonical, Open Graph, JSON-LD (`Organization`, `Product`), `noindex` en carrito, login, registro y admin.
+- Política comercial única en `app/config.py` (`POLITICA`): envío no gratis, entrega en máximo 6 días, sin cambios, todos los medios de pago salvo contra entrega. Se quitaron la barra de envío gratis, "Comercio Justo", "tarjeta de autenticidad" y "Cambios garantizados".
+- `WHATSAPP_PHONE` movido a `app/config.py`; estáticos con caché de 30 días; cookies seguras también en Vercel.
+- Miniaturas, `width`/`height` y carga prioritaria en tarjetas; imagen del manifiesto de 1,5 MB a 98 KB; fallback de imágenes en `app.js`.
+- Hero nuevo (titular propuesto, CTA de WhatsApp, rosetas de jaguar en SVG) y scrollytelling "El camino de una pieza" (`templates/_story.html`, `static/js/story.js`), con soporte de `prefers-reduced-motion`.
+
+Pendiente:
+
+- Validar `SECRET_KEY` también con `VERCEL=1` (hoy solo con `FLASK_ENV=production`; cambiarlo tumba el sitio si la variable no existe).
+- Carpeta `tests/` con base aislada (pytest no está instalado en `venv`).
+- Persistencia en Vercel (esquema una sola vez, almacenamiento de imágenes, PostgreSQL). Requiere decidir hosting (§5.5).
+- Identidad del folleto (tipografía, paleta, ilustraciones): el folleto no es legible desde el repo; las fuentes siguen siendo las provisionales.
+- Capítulos adicionales del scrollytelling con GSAP (sin red no se pudo instalar) y revisión de ficha de producto y catálogo.
+- Titular del hero, afirmaciones "hasta diez horas" y "cera de abejas" (copiadas del texto existente) requieren confirmación del dueño.

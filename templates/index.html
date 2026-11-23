@@ -17,17 +17,27 @@
     <main id="main-content">
         <!-- 1. Hero Lookbook Editorial -->
         <section class="hero-section" aria-label="Introducción a Artisan">
+            <svg class="hero-rosettes" aria-hidden="true" focusable="false" width="100%" height="100%">
+                <defs>
+                    <pattern id="rosetas" width="120" height="120" patternUnits="userSpaceOnUse">
+                        <g fill="none" stroke="#BFA15F" stroke-width="1.5"><circle cx="30" cy="30" r="14"/><circle cx="90" cy="90" r="14"/><circle cx="90" cy="30" r="8"/><circle cx="30" cy="90" r="8"/></g>
+                        <g fill="#BFA15F"><circle cx="30" cy="30" r="3"/><circle cx="90" cy="90" r="3"/></g>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#rosetas)"/>
+            </svg>
             <div class="hero-lookbook-container contenedor">
-                <div class="hero-content reveal">
-                    <span class="hero-eyebrow">ARTISAN / STUDIO — SAN AGUSTÍN</span>
-                    <h1 class="hero-title">Piezas únicas nacidas de la paciencia y el detalle</h1>
-                    <p class="hero-subtitle">
-                        Cada cuenta tejida a mano y cada trazo sobre cuero genuino rescatan la nobleza del oficio tradicional en San Agustín. Lujo silencioso, formas orgánicas y devoción por el tiempo.
+                <div class="hero-content">
+                    <span class="hero-eyebrow hero-in" style="--n:0">ARTISAN / STUDIO — SAN AGUSTÍN, HUILA</span>
+                    <h1 class="hero-title hero-in" style="--n:1">Joyería tejida a mano y marroquinería de autor, hechas en San Agustín</h1>
+                    <p class="hero-subtitle hero-in" style="--n:2">
+                        Cada cuenta se teje a mano y cada pieza de cuero se cose a mano. {{ POLITICA.envio_cobertura }}, con entrega en máximo 6 días.
                     </p>
-                    <div class="hero-actions">
+                    <div class="hero-actions hero-in" style="--n:3">
                         <a href="/lineaproductos" class="btn btn-primary btn-lg">Explorar Colección</a>
-                        <a href="#colecciones" class="btn btn-outline btn-lg">Ver Colecciones</a>
+                        <a href="https://wa.me/{{ WHATSAPP_PHONE }}?text=Hola%20Artisan,%20quiero%20hacer%20un%20pedido" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg">Pedir por WhatsApp</a>
                     </div>
+                    <a href="#proceso" class="hero-scroll hero-in" style="--n:4" aria-label="Ver cómo se hace una pieza">Cómo se hace ↓</a>
                 </div>
             </div>
         </section>
@@ -68,6 +78,8 @@
                 </div>
             </div>
         </section>
+
+        {% include '_story.html' %}
 
         <!-- 3. Vitrina de Colecciones como Galería de Arte -->
         <section id="colecciones" class="collections-section contenedor reveal" aria-labelledby="col-title">
@@ -147,6 +159,7 @@
                 {% else %}
                 <div class="empty-placeholder text-center span-2">
                     <p>Pronto publicaremos nuevas piezas únicas de nuestra colección.</p>
+                    <a href="https://wa.me/{{ WHATSAPP_PHONE }}?text=Hola%20Artisan,%20quiero%20conocer%20sus%20piezas" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Escríbenos por WhatsApp</a>
                 </div>
                 {% endfor %}
             </div>
@@ -161,7 +174,7 @@
             <div class="contenedor manifesto-inner">
                 <div class="manifesto-visual">
                     <div class="manifesto-frame">
-                        <img src="{{ url_for('static', filename='img/IMG_20260121_150438_1600.webp') }}" alt="Taller artesanal de Artisan en San Agustín" loading="lazy">
+                        <img src="{{ url_for('static', filename='img/IMG_20260121_150438_1600.webp') }}" alt="Brazalete tejido a mano en fibra color vino" loading="lazy">
                         <div class="manifesto-badge">
                             <span>San Agustín, Huila</span>
                             <strong>Tierra Ancestral</strong>
@@ -212,5 +225,6 @@
     </main>
 
     {% include 'footer.html' %}
+    <script src="{{ url_for('static', filename='js/story.js') }}?v={{ cache_buster() }}" defer></script>
 </body>
 </html>

@@ -1,0 +1,94 @@
+{# Scrollytelling: el camino de una pieza. Escena SVG fija a la derecha, pasos a la izquierda. #}
+<section id="proceso" class="story" aria-labelledby="story-title" data-story>
+    <div class="contenedor">
+        <div class="section-heading text-center">
+            <span class="gold-subtitle">EL CAMINO DE UNA PIEZA</span>
+            <h2 id="story-title" class="titulo-seccion">Del hilo a tus manos</h2>
+            <div class="heading-divider"></div>
+        </div>
+
+        <div class="story-layout">
+            <div class="story-stage" aria-hidden="true">
+                <svg class="story-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
+                    <defs>
+                        <clipPath id="jag-clip"><path id="jag-body" d="M92 128C140 96 220 100 290 102C340 104 380 98 420 92C440 80 470 78 495 88C515 95 540 105 548 118C552 126 548 134 540 136C525 140 510 138 500 142C490 150 470 152 455 148C440 160 430 172 420 178C380 188 300 185 240 184C180 184 140 180 110 172C84 160 80 140 92 128Z"/></clipPath>
+                    </defs>
+                    <circle class="story-halo" cx="300" cy="260" r="210"/>
+
+                    <!-- Escena 1: materiales -->
+                    <g class="scene" data-scene="0">
+                        {% for i in range(28) %}
+                        <circle class="bead bead-float c{{ i % 4 }}" cx="{{ 120 + (i * 97) % 360 }}" cy="{{ 90 + (i * 53) % 300 }}" r="{{ 7 + (i % 3) * 3 }}" style="--d:{{ (i % 7) * 0.4 }}s"/>
+                        {% endfor %}
+                    </g>
+
+                    <!-- Escena 2: tejido -->
+                    <g class="scene" data-scene="1">
+                        {% for r in range(7) %}{% for c in range(12) %}
+                        <rect class="bead-weave {{ 'gold' if ((c + r) % 4 == 0 or (c - r) % 4 == 0) else 'forest' }}" x="{{ 100 + c * 33 + (r % 2) * 16 }}" y="{{ 120 + r * 38 }}" width="26" height="20" rx="9" style="--i:{{ r * 12 + c }}"/>
+                        {% endfor %}{% endfor %}
+                    </g>
+
+                    <!-- Escena 3: cuero -->
+                    <g class="scene" data-scene="2">
+                        <rect x="130" y="130" width="340" height="240" rx="14" class="leather"/>
+                        <rect x="150" y="150" width="300" height="200" rx="8" class="stitch" pathLength="100"/>
+                        <path d="M130 215H470" class="leather-fold"/>
+                        <circle cx="300" cy="215" r="9" class="leather-stud"/>
+                    </g>
+
+                    <!-- Escena 4: sello -->
+                    <g class="scene" data-scene="3">
+                        <g class="seal">
+                            <circle cx="300" cy="250" r="150" class="seal-ring"/>
+                            {% for i in range(12) %}
+                            <g transform="rotate({{ i * 30 }} 300 250) translate(300 108)"><circle r="14" class="rosette"/><circle r="4" class="rosette-dot"/></g>
+                            {% endfor %}
+                        </g>
+                        <path d="M300 195 L335 295 H318 L310 272 H290 L282 295 H265 Z M300 226 L293 255 H307 Z" class="seal-a" fill-rule="evenodd"/>
+                    </g>
+
+                    <!-- Jaguar que recorre el escenario con el scroll -->
+                    <g class="jaguar" id="story-jaguar">
+                        <g class="jag-leg jag-leg-b"><line x1="395" y1="165" x2="385" y2="240"/><line x1="140" y1="165" x2="120" y2="240"/></g>
+                        <path class="jag-tail" d="M95 135C60 130 30 100 40 60C44 45 60 42 64 55"/>
+                        <path class="jag-fill" d="M92 128C140 96 220 100 290 102C340 104 380 98 420 92C440 80 470 78 495 88C515 95 540 105 548 118C552 126 548 134 540 136C525 140 510 138 500 142C490 150 470 152 455 148C440 160 430 172 420 178C380 188 300 185 240 184C180 184 140 180 110 172C84 160 80 140 92 128Z"/>
+                        <path class="jag-fill" d="M462 88L468 62L486 84Z"/>
+                        <g clip-path="url(#jag-clip)">
+                            {% for p in [(140,128),(200,150),(250,118),(300,150),(345,122),(385,150),(170,100),(420,120),(230,172),(330,175),(120,155),(455,125)] %}
+                            <g transform="translate({{ p[0] }} {{ p[1] }})"><circle r="11" class="rosette"/><circle r="3.500" class="rosette-dot"/></g>
+                            {% endfor %}
+                        </g>
+                        <circle cx="505" cy="104" r="4" class="jag-eye"/>
+                        <g class="jag-leg jag-leg-f"><line x1="425" y1="168" x2="445" y2="235"/><line x1="175" y1="170" x2="195" y2="238"/></g>
+                    </g>
+                </svg>
+                <div class="story-progress"><span id="story-progress-bar"></span></div>
+            </div>
+
+            <ol class="story-steps">
+                <li class="story-step" data-step="0">
+                    <span class="trust-num">01</span>
+                    <h3>Materiales nobles</h3>
+                    <p>Delicas japonesas Miyuki, mostacilla checa calibrada y cuero curtido vegetal. Cada color se escoge a mano.</p>
+                </li>
+                <li class="story-step" data-step="1">
+                    <span class="trust-num">02</span>
+                    <h3>Cuenta por cuenta</h3>
+                    <p>El tejido se hace a mano, sin procesos industriales. Una manilla en delica puede requerir hasta diez horas de concentración.</p>
+                </li>
+                <li class="story-step" data-step="2">
+                    <span class="trust-num">03</span>
+                    <h3>Cuero con costura manual</h3>
+                    <p>Cada corte honra la materia prima. La costura se hace a mano y el acabado se pule con cera de abejas.</p>
+                </li>
+                <li class="story-step" data-step="3">
+                    <span class="trust-num">04</span>
+                    <h3>Tuya, desde San Agustín</h3>
+                    <p>{{ POLITICA.envio_cobertura }}. {{ POLITICA.envio_plazo }} Escríbenos por WhatsApp y coordinamos tu pedido.</p>
+                    <a href="/lineaproductos" class="btn btn-primary btn-sm">Ver el catálogo</a>
+                </li>
+            </ol>
+        </div>
+    </div>
+</section>
