@@ -34,7 +34,7 @@
             <!-- Columna Izquierda: Galería Visual Dominante -->
             <div class="galeria-seccion">
                 <div class="galeria-principal-wrapper">
-                    <img src="{{ p.imagen_url }}?v={{ cache_buster() }}" alt="{{ p.nombre }}" class="principal-img" loading="eager" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                    <img src="{{ p.imagen_url }}?v={{ cache_buster() }}" alt="{{ p.nombre }}" class="principal-img" loading="eager">
                     <span class="galeria-badge">Pieza Única</span>
                 </div>
 
@@ -47,7 +47,7 @@
                 <div class="extra-images" role="tablist" aria-label="Miniaturas de la pieza">
                     {% for img in extras %}
                     <button type="button" class="thumb-btn {% if loop.first %}is-active{% endif %}" aria-label="Ver imagen {{ loop.index }} de {{ p.nombre }}">
-                        <img src="{{ img }}?v={{ cache_buster() }}" alt="{{ p.nombre }} miniatura {{ loop.index }}" class="thumb-img {% if loop.first %}is-active{% endif %}" loading="lazy" onerror="this.style.display='none'">
+                        <img src="{{ img }}?v={{ cache_buster() }}" alt="{{ p.nombre }} miniatura {{ loop.index }}" class="thumb-img {% if loop.first %}is-active{% endif %}" loading="lazy" data-hide-on-error>
                     </button>
                     {% endfor %}
                 </div>
@@ -169,7 +169,7 @@
                 <article class="producto producto-card">
                     <div class="producto-img-container">
                         <a href="/producto/{{ s.id }}">
-                            <img src="{{ s.imagen_url }}" alt="{{ s.nombre }}" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                            <img src="{{ s.imagen_url }}" alt="{{ s.nombre }}" loading="lazy">
                         </a>
                     </div>
                     <div class="producto-body">

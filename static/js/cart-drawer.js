@@ -402,7 +402,7 @@
                     return `
                     <li class="drawer-item" data-id="${item.id}">
                         <div class="drawer-item-img-wrap">
-                            <img src="${imgUrl}" alt="${escapeHtml(item.nombre)}" class="drawer-item-img" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                            <img src="${imgUrl}" alt="${escapeHtml(item.nombre)}" class="drawer-item-img" loading="lazy">
                         </div>
                         <div class="drawer-item-info">
                             <h4 class="drawer-item-name"><a href="/producto/${item.id}">${escapeHtml(item.nombre)}</a></h4>

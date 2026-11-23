@@ -30,7 +30,11 @@ def create_app():
 
     def _thumb(url):
         """Devuelve la miniatura *_thumb.webp de una imagen de producto si existe en disco."""
-        if not url or not url.endswith('.webp') or url.endswith('_thumb.webp'):
+        if not url:
+            return url
+        if not url.startswith(('/', 'http://', 'https://')):
+            url = '/' + url
+        if not url.endswith('.webp') or url.endswith('_thumb.webp'):
             return url
         candidate = url[:-5] + '_thumb.webp'
         if os.path.exists(os.path.join(_proj_root, candidate.lstrip('/'))):

@@ -28,7 +28,7 @@
                     {% for item in items %}
                     <li class="carrito-item-card">
                         <div class="carrito-item-media">
-                            <img src="{{ item.imagen_url if item.imagen_url else url_for('static', filename='img/IMG_20260121_150438.webp') }}" alt="{{ item.nombre }}" loading="lazy" onerror="this.src='/static/img/IMG_20260121_150438.webp'">
+                            <img src="{{ (item.imagen_url|thumb) if item.imagen_url else url_for('static', filename='img/IMG_20260121_150438.webp') }}" alt="{{ item.nombre }}" loading="lazy">
                         </div>
 
                         <div class="carrito-item-details">
