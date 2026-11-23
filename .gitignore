@@ -91,3 +91,4 @@ Thumbs.db
 # Temporal
 *.tmp
 temp/
+backups/

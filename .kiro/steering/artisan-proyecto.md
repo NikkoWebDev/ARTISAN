@@ -23,7 +23,7 @@ Tienda Flask para joyería textil y marroquinería (San Agustín, Huila). Checko
 ## Qué no hacer
 
 - No leer ni copiar valores de `.env`, `backend.env` ni `env.md`. Pueden tener secretos.
-- No modificar `database.db` desde pruebas. Para `test_cart_flow.py` usar `SQLITE_PATH=/tmp/artisan_test.db`.
+- No modificar `database.db` desde pruebas. Las pruebas viven en `tests/` y usan una base temporal.
 - No inventar datos comerciales (tiempos de envío, costos, certificaciones, reseñas). Si falta un dato, dejarlo marcado como pendiente. Ver `docs/14` §5.
 - No desplegar ni publicar sin confirmación del dueño.
 - No usar `docs/10` ni `docs/12` como fuente: están desactualizados. La fuente es el código.
@@ -32,5 +32,5 @@ Tienda Flask para joyería textil y marroquinería (San Agustín, Huila). Checko
 
 ```bash
 python -c "from app import create_app; a = create_app(); print('arranca ok')"
-SQLITE_PATH=/tmp/artisan_test.db python -m pytest test_cart_flow.py -q
+.venv/bin/python -m pytest tests -q
 ```

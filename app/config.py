@@ -33,5 +33,8 @@ class Config:
 
     @classmethod
     def validate(cls):
-        if IS_PRODUCTION and not os.environ.get('SECRET_KEY'):
-            raise RuntimeError('SECRET_KEY is required in production. Set SECRET_KEY in environment.')
+        if (IS_PRODUCTION or os.environ.get('VERCEL') == '1') and not os.environ.get('SECRET_KEY'):
+            raise RuntimeError(
+                'Falta la variable de entorno SECRET_KEY. Defínela con un valor aleatorio de 64+ caracteres '
+                '(en Vercel: Project Settings > Environment Variables) antes de arrancar en producción.'
+            )

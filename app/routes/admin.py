@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 
 from flask import current_app
 from app.db import get_db
+from app.storage import save_upload
 from app.csrf import validate_csrf
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -53,8 +54,7 @@ def save_image(file, nombre, index):
         return None
 
     fname = secure_filename(f"{nombre}_{index}{ext}")
-    file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], fname))
-    return f"/static/img/productos/{fname}"
+    return save_upload(file, fname)
 
 
 @admin_bp.route('/')

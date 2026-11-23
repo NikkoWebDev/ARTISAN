@@ -19,6 +19,8 @@
 | Variable | Ejemplo | Obligatoria | Secreto |
 |---|---|---|---|
 | `FLASK_ENV` | `production` | Sí (para activar cookies seguras) | No |
+| `SITE_URL` | `https://tu-dominio.com` | Recomendada | No |
+| `BLOB_READ_WRITE_TOKEN` | (lo agrega Vercel) | Solo en Vercel | **Sí** |
 | `SECRET_KEY` | `64+ caracteres aleatorios` | Sí | **Sí** |
 | `WHATSAPP_PHONE` | `573123580705` | Recomendada | No |
 | `DATABASE_URL` | `postgresql://user:pass@host:5432/db` | Sí si usas PostgreSQL | **Sí** |
@@ -489,6 +491,26 @@ Hasta corregirlos, usa el despliegue manual con Gunicorn (§3) o el workaround d
 - Estado de backups.
 
 No hay endpoint `/health`; puedes usar `/index` o `/static/css/style.css`.
+
+## 10. Vercel (producción elegida)
+
+### Antes de desplegar
+
+1. **Define `SECRET_KEY`** (64+ caracteres aleatorios) en Project Settings > Environment Variables. Con `VERCEL=1` o `FLASK_ENV=production`, la app **no arranca** sin esa variable y el error dice cuál definir.
+2. Crea una base PostgreSQL (Vercel Postgres/Neon u otra) y define `DATABASE_URL`. Sin ella, Vercel usa SQLite en `/tmp`, que se borra al reiniciar la instancia.
+3. Migra los datos actuales: `DATABASE_URL=... python tools/migrate_sqlite_to_pg.py` (hace respaldo en `backups/`, conserva ids y se puede repetir sin duplicar).
+4. Crea un store público de Vercel Blob y conecta el proyecto: Vercel agrega `BLOB_READ_WRITE_TOKEN`. Añade el paquete `vercel` a `requirements.txt` (hoy es opcional). Sin el token, las imágenes del admin se guardan en disco, que en Vercel no persiste.
+5. Define `SITE_URL` (por ejemplo `https://tu-dominio.com`) para canonical, Open Graph y sitemap.
+6. Define `WHATSAPP_PHONE` si cambia el número (por defecto `573123580705`).
+7. Ejecuta `.venv/bin/python -m pytest tests -q` y revisa el sitio en un deploy de preview. **No se despliega sin confirmación del dueño.**
+
+### Notas de código
+
+- `ensure_schema_once()` (en `db_utils.py`) corre el DDL una vez por proceso y base, no en cada petición.
+- `app/storage.py` decide entre Vercel Blob y disco local según `BLOB_READ_WRITE_TOKEN`.
+- Las imágenes ya subidas a `static/img/productos/` viajan con el despliegue; las nuevas del admin van a Blob.
+- Los límites de peticiones usan memoria por instancia (`RATELIMIT_STORAGE_URI`); en serverless son aproximados.
+
 
 ---
 

@@ -39,7 +39,7 @@ flowchart LR
     DBU["db_utils.py<br/>connect_db / ensure_schema"]
     SETUP["database_setup.py<br/>script inicial"]
     SEED["seed_catalog.py<br/>datos de muestra"]
-    TESTS["test_cart_flow.py<br/>pytest"]
+    TESTS["tests/<br/>pytest"]
     E2E["e2e_test.py<br/>legado, HTTP real"]
     IMGOPT["app/image_optimizer.py<br/>utilidad CLI"]
 
@@ -201,8 +201,8 @@ flowchart TD
 | `app/image_optimizer.py` | Convierte fotos a WebP | Nadie (manual) | Bajo |
 | `db_utils.py` | Conexión SQLite/PostgreSQL, esquema y migraciones | `app/db.py`, scripts | **Alto** |
 | `database_setup.py` | Crea esquema y admin inicial | Manual | Medio |
-| `seed_catalog.py` | Inserta productos de muestra | Manual, `test_cart_flow.py` | Medio: escribe en la BD |
-| `test_cart_flow.py` | Pruebas del carrito con pytest | Manual | Bajo; ver aviso §6 |
+| `seed_catalog.py` | Inserta productos de muestra | Manual, `tests/conftest.py` | Medio: escribe en la BD |
+| `tests/` | Pruebas con pytest y base temporal (`tests/conftest.py`) | Manual | Bajo: nunca toca `database.db` |
 | `e2e_test.py` | Prueba HTTP legado | Manual | Bajo; probablemente falla |
 | `api/index.py` | Entrada para Vercel | `vercel.json` | Medio |
 | `vercel.json` | Reescrituras a `/api/index` | Vercel | Medio |
@@ -248,7 +248,7 @@ flowchart TD
 
 | Elemento | Qué pasa | Qué hacer |
 |---|---|---|
-| `test_cart_flow.py` | Llama a `seed_database()`, que usa `connect_db()`. Si no defines `SQLITE_PATH`, escribe en **`database.db` real**. | Ejecutar con `SQLITE_PATH=/tmp/artisan_test.db`. |
+| `tests/` | Resuelto: `conftest.py` define `SQLITE_PATH` temporal antes de importar la app. | Ninguna. |
 | `e2e_test.py` | Habla por HTTP con `127.0.0.1:5000`, usa GET en rutas POST y no envía CSRF. | Reescribir o eliminar. No lo ejecutamos. |
 | `package.json` | Solo declara `flask ^0.2.10`. Ningún archivo de Python lo lee y esa versión no es la que usa `requirements.txt`. | Probablemente residuo; confirmar y eliminar. |
 | `.venv/` y `venv/` | Dos entornos virtuales en la raíz. | Quedarse con uno y dejar el otro fuera del ZIP. |
@@ -267,7 +267,7 @@ flowchart TD
 python -c "from app import create_app; a = create_app(); print(sorted({r.rule for r in a.url_map.iter_rules()})[:10])"
 
 # 2. Pruebas del carrito sin tocar la base real
-SQLITE_PATH=/tmp/artisan_test.db python -m pytest test_cart_flow.py -q
+.venv/bin/python -m pytest tests -q
 
 # 3. Las plantillas compilan (sin renderizar)
 python -c "from app import create_app; a = create_app(); a.jinja_env.get_template('index.html'); print('ok')"

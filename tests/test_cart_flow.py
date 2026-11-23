@@ -6,24 +6,13 @@ import sqlite3
 import markupsafe
 import pytest
 
-from app import create_app
-from app.db import get_db
-from seed_catalog import seed_database
 
-
-@pytest.fixture(autouse=True)
-def prepare_database():
-    """Ensure schema and seed products exist."""
-    seed_database()
+ARETES = 'Aretes de Mostacilla Checa Flor Silvestre'
 
 
 @pytest.fixture
-def client():
-    app = create_app()
-    app.config['TESTING'] = True
-    app.config['WTF_CSRF_ENABLED'] = True  # strictly test with CSRF enabled
-    with app.test_client() as c:
-        yield c
+def aid(product_id):
+    return product_id(ARETES)
 
 
 def get_session_csrf(client) -> str:
@@ -46,37 +35,38 @@ def test_guest_can_access_api_cart(client):
     assert data['count'] == 0
 
 
-def test_csrf_protection_on_api(client):
+def test_csrf_protection_on_api(client, aid):
     """Criterion: Mutating endpoints reject requests without valid CSRF."""
     # Attempt POST without CSRF token
-    res = client.post('/api/cart/add/2', json={'cantidad': 1})
+    res = client.post(f'/api/cart/add/{aid}', json={'cantidad': 1})
     assert res.status_code == 403
 
-    res_upd = client.post('/api/cart/update/2', json={'cantidad': 2})
+    res_upd = client.post(f'/api/cart/update/{aid}', json={'cantidad': 2})
     assert res_upd.status_code == 403
 
-    res_rem = client.post('/api/cart/remove/2', json={})
+    res_rem = client.post(f'/api/cart/remove/{aid}', json={})
     assert res_rem.status_code == 403
 
 
-def test_api_cart_lifecycle_for_guest(client):
+def test_api_cart_lifecycle_for_guest(client, aid, product_id):
     """Criterion 2: Add, update, remove in JSON with proper recalculation."""
     csrf_token = get_session_csrf(client)
     headers = {'X-CSRF-Token': csrf_token}
 
     # 1. Add item 2 (Aretes de Mostacilla: $35,000)
-    res = client.post('/api/cart/add/2', json={'cantidad': 2}, headers=headers)
+    res = client.post(f'/api/cart/add/{aid}', json={'cantidad': 2}, headers=headers)
     assert res.status_code == 200
     cart = res.get_json()
     assert cart['count'] == 2
     assert cart['total'] == 70000.0
     assert len(cart['items']) == 1
-    assert cart['items'][0]['id'] == 2
+    assert cart['items'][0]['id'] == aid
     assert cart['items'][0]['nombre'] == 'Aretes de Mostacilla Checa Flor Silvestre'
     assert cart['items'][0]['precio'] == 35000.0
 
+    pid = product_id('Pulsera de Mostacilla Multicolor Étnica')
     # 2. Add item 3 (Pulsera de Mostacilla: $28,000)
-    res2 = client.post('/api/cart/add/3', json={'cantidad': 1}, headers=headers)
+    res2 = client.post(f'/api/cart/add/{pid}', json={'cantidad': 1}, headers=headers)
     assert res2.status_code == 200
     cart2 = res2.get_json()
     assert cart2['count'] == 3
@@ -84,33 +74,33 @@ def test_api_cart_lifecycle_for_guest(client):
     assert len(cart2['items']) == 2
 
     # 3. Update quantity of item 2 to 3
-    res3 = client.post('/api/cart/update/2', json={'cantidad': 3}, headers=headers)
+    res3 = client.post(f'/api/cart/update/{aid}', json={'cantidad': 3}, headers=headers)
     assert res3.status_code == 200
     cart3 = res3.get_json()
     assert cart3['count'] == 4
     assert cart3['total'] == 133000.0  # (35,000 * 3) + 28,000
 
     # 4. Remove item 3
-    res4 = client.post('/api/cart/remove/3', headers=headers)
+    res4 = client.post(f'/api/cart/remove/{pid}', headers=headers)
     assert res4.status_code == 200
     cart4 = res4.get_json()
     assert cart4['count'] == 3
     assert cart4['total'] == 105000.0
     assert len(cart4['items']) == 1
-    assert cart4['items'][0]['id'] == 2
+    assert cart4['items'][0]['id'] == aid
 
 
-def test_price_anti_tampering(client):
+def test_price_anti_tampering(client, aid):
     """Anti-manipulation: cart total must be verified against database."""
     csrf_token = get_session_csrf(client)
     headers = {'X-CSRF-Token': csrf_token}
 
     # Add item normally
-    client.post('/api/cart/add/2', json={'cantidad': 1}, headers=headers)
+    client.post(f'/api/cart/add/{aid}', json={'cantidad': 1}, headers=headers)
 
     # Malicious tampering in session cookie
     with client.session_transaction() as sess:
-        sess['cart'] = [{'id': 2, 'nombre': 'Aretes', 'precio': 1.0, 'cantidad': 1}]
+        sess['cart'] = [{'id': aid, 'nombre': 'Aretes', 'precio': 1.0, 'cantidad': 1}]
 
     # Query GET /api/cart: should reconcile against DB price ($35,000)
     res = client.get('/api/cart')
@@ -119,7 +109,7 @@ def test_price_anti_tampering(client):
     assert data['total'] == 35000.0
 
 
-def test_html_cart_guest_views_and_add(client):
+def test_html_cart_guest_views_and_add(client, aid):
     """Criterion 1: Unauthenticated user can view /carrito and add items via POST without login."""
     # 1. View /carrito
     res = client.get('/carrito')
@@ -130,12 +120,12 @@ def test_html_cart_guest_views_and_add(client):
     csrf_token = get_session_csrf(client)
 
     # 2. GET /carrito/add/<id> must be rejected (405 Method Not Allowed) to prevent CSRF by GET
-    res_get = client.get('/carrito/add/2')
+    res_get = client.get(f'/carrito/add/{aid}')
     assert res_get.status_code == 405
 
     # 3. Add via POST with valid CSRF
     res_add = client.post(
-        '/carrito/add/2',
+        f'/carrito/add/{aid}',
         data={'cantidad': '1', 'csrf_token': csrf_token},
         follow_redirects=True,
     )
@@ -148,7 +138,7 @@ def test_html_cart_guest_views_and_add(client):
     assert b'35,000' in res_cart.data
 
 
-def test_guest_can_add_subproduct_variant(client):
+def test_guest_can_add_subproduct_variant(client, aid):
     """BUG-01: Verify subproducts (parent_id IS NOT NULL) can be added and purchased."""
     conn = sqlite3.connect(os.environ.get('SQLITE_PATH', 'database.db'))
     conn.row_factory = sqlite3.Row
@@ -157,7 +147,7 @@ def test_guest_can_add_subproduct_variant(client):
         cur = conn.cursor()
         cur.execute(
             '''INSERT INTO productos (nombre, categoria, precio, descripcion, parent_id)
-               VALUES ('Variante Test', 'Bisutería', 25000, 'Variante de prueba', 2)'''
+               VALUES ('Variante Test', 'Bisutería', 25000, 'Variante de prueba', ?)''', (aid,)
         )
         conn.commit()
         sub = conn.execute('SELECT * FROM productos WHERE id = ?', (cur.lastrowid,)).fetchone()
@@ -184,13 +174,13 @@ def test_guest_can_add_subproduct_variant(client):
     assert escaped_sub_name in res_cart.data
 
 
-def test_guest_checkout_whatsapp(client):
+def test_guest_checkout_whatsapp(client, aid):
     """Criterion 1 & checkout: Guest checkout generates order without login redirect."""
     csrf_token = get_session_csrf(client)
     headers = {'X-CSRF-Token': csrf_token}
 
     # Add item
-    client.post('/api/cart/add/2', json={'cantidad': 2}, headers=headers)
+    client.post(f'/api/cart/add/{aid}', json={'cantidad': 2}, headers=headers)
 
     # Checkout as guest with name and phone
     checkout_payload = {

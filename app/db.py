@@ -1,11 +1,11 @@
 from flask import g
-from db_utils import connect_db, ensure_schema
+from db_utils import connect_db, ensure_schema_once
 
 
 def get_db():
     if 'db' not in g:
         g.db = connect_db()
-        ensure_schema(g.db)
+        ensure_schema_once(g.db)
     return g.db
 
 

@@ -22,7 +22,7 @@ Este documento es el punto de entrada para retomar el proyecto. Dice qué está 
 | Login y registro | Funcional | Contraseñas con hash. Sin recuperación de contraseña. |
 | Admin | Funcional | CRUD de productos y categorías, lectura de pedidos. No cambia el estado de un pedido. |
 | SEO | Incompleto | Sin canonical, Open Graph ni datos estructurados. |
-| Pruebas | Parcial | `test_cart_flow.py` existe. `e2e_test.py` está desactualizado. |
+| Pruebas | Funcional | `tests/` con base temporal (15 pruebas). `e2e_test.py` está desactualizado. |
 | Documentación | Parcial | Los documentos 10 y 12 están desactualizados (ver §4). |
 
 ---
@@ -44,7 +44,7 @@ Ordenados por gravedad. Cada riesgo indica su ubicación exacta.
 | 9 | **Imágenes de producto sin tamaños adecuados.** La home usa `p.imagen_url` directamente y todas las imágenes tienen `loading="lazy"`, incluidas las del primer pliegue. | `templates/index.html` (línea 118). | Medio: peso y velocidad. | Usar la versión `_thumb.webp` en tarjetas, `width`/`height` y `loading="eager"` en las primeras imágenes. |
 | 10 | **Atributo `onerror` inline.** Dificulta una política de seguridad de contenido (CSP). | `templates/index.html` (línea 118). | Bajo | Mover el fallback a `app.js`. |
 | 11 | **Límites de peticiones con almacenamiento en memoria.** `memory://` no se comparte entre instancias ni sobrevive a reinicios. | `app/config.py` (`RATELIMIT_STORAGE_URI`). | Bajo en local, medio en serverless. | Usar Redis o aceptar el límite por instancia. |
-| 12 | **`test_cart_flow.py` escribe en la base real.** Llama a `seed_database()` sin aislar la base. | `test_cart_flow.py` (línea 16) y `seed_catalog.py` (línea 124). | Medio: contamina `database.db`. | Ejecutar con `SQLITE_PATH` apuntando a un archivo temporal. |
+| 12 | **(Resuelto) `test_cart_flow.py` escribía en la base real.** Llama a `seed_database()` sin aislar la base. | `test_cart_flow.py` (línea 16) y `seed_catalog.py` (línea 124). | Medio: contamina `database.db`. | Ejecutar con `SQLITE_PATH` apuntando a un archivo temporal. |
 | 13 | **Base de datos en Vercel no persiste.** Con `VERCEL=1` se copia `database.db` a `/tmp`. Los cambios se pierden al reiniciar la instancia. | `db_utils.py` (rama `VERCEL == '1'`). | Alto si el sitio se publica en Vercel con admin activo. | Decidir un hosting con base persistente (PostgreSQL) para producción. |
 | 14 | **`package.json` con dependencia sin sentido.** Declara `flask ^0.2.10`, que no usa el código. | `package.json`. | Bajo: confusión y riesgo de instalar algo equivocado. | Eliminar si no hay tooling de Node. |
 
