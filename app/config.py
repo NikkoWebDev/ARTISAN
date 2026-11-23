@@ -19,6 +19,17 @@ POLITICA = {
 }
 
 
+# Datos de contacto del folleto (el único teléfono público es el WhatsApp de WHATSAPP_PHONE).
+CONTACTO = {
+    'tienda': 'Tienda Artisan',
+    'direccion': 'Calle 5 # 14-52, San Agustín, Huila, Colombia',
+    'facebook': 'Artisan en San Agustín Huila',
+    'instagram': 'maniguamostacilla',
+    'correo': 'maniguasa@yahoo.es',
+    'tejedores': 'Aiden Calderón y Abel López',
+}
+
+
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or os.environ.get('SECRET', 'artisan_key_2026')
     UPLOAD_FOLDER = 'static/img/productos'

@@ -3,7 +3,7 @@ import secrets
 import time
 from flask import Flask, request, session
 import markupsafe
-from app.config import Config, POLITICA, SITE_URL, WHATSAPP_PHONE
+from app.config import Config, CONTACTO, POLITICA, SITE_URL, WHATSAPP_PHONE
 from app.extensions import limiter
 from app.db import close_db
 
@@ -60,6 +60,7 @@ def create_app():
         return {
             'WHATSAPP_PHONE': WHATSAPP_PHONE,
             'POLITICA': POLITICA,
+            'CONTACTO': CONTACTO,
             'site_url': lambda: SITE_URL or request.host_url.rstrip('/'),
             'csrf_token': lambda: session.get('csrf_token', ''),
             'cache_buster': _cache_buster,

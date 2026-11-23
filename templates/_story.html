@@ -1,94 +1,101 @@
-{# Scrollytelling: el camino de una pieza. Escena SVG fija a la derecha, pasos a la izquierda. #}
-<section id="proceso" class="story" aria-labelledby="story-title" data-story>
+{# Scrollytelling de los tres primeros capítulos: La Manigua, El Tejido y Los Tejedores.
+   Escena SVG fija a la derecha; los textos hacen scroll a la izquierda. Textos del folleto de la familia. #}
+<section id="historia" class="story chapter" aria-label="La historia de Artisan" data-story>
     <div class="contenedor">
-        <div class="section-heading text-center">
-            <span class="gold-subtitle">EL CAMINO DE UNA PIEZA</span>
-            <h2 id="story-title" class="titulo-seccion">Del hilo a tus manos</h2>
-            <div class="heading-divider"></div>
-        </div>
-
         <div class="story-layout">
             <div class="story-stage" aria-hidden="true">
                 <svg class="story-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
                     <defs>
-                        <clipPath id="jag-clip"><path id="jag-body" d="M92 128C140 96 220 100 290 102C340 104 380 98 420 92C440 80 470 78 495 88C515 95 540 105 548 118C552 126 548 134 540 136C525 140 510 138 500 142C490 150 470 152 455 148C440 160 430 172 420 178C380 188 300 185 240 184C180 184 140 180 110 172C84 160 80 140 92 128Z"/></clipPath>
+                        <pattern id="beads-skin" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <rect width="20" height="20" fill="#5a2a10"/>
+                            <circle cx="5" cy="5" r="4.400" fill="#E8923A"/>
+                            <circle cx="15" cy="5" r="4.400" fill="#D9701F"/>
+                            <circle cx="5" cy="15" r="4.400" fill="#D9701F"/>
+                            <circle cx="15" cy="15" r="4.400" fill="#E8923A"/>
+                        </pattern>
+                        <clipPath id="jag-clip"><path d="M92 128C140 96 220 100 290 102C340 104 380 98 420 92C440 80 470 78 495 88C515 95 540 105 548 118C552 126 548 134 540 136C525 140 510 138 500 142C490 150 470 152 455 148C440 160 430 172 420 178C380 188 300 185 240 184C180 184 140 180 110 172C84 160 80 140 92 128Z"/></clipPath>
                     </defs>
-                    <circle class="story-halo" cx="300" cy="260" r="210"/>
+                    <circle class="story-halo" cx="300" cy="270" r="215"/>
 
-                    <!-- Escena 1: materiales -->
+                    <!-- Capítulo 1: La Manigua (hojas y colibrí) -->
                     <g class="scene" data-scene="0">
-                        {% for i in range(28) %}
-                        <circle class="bead bead-float c{{ i % 4 }}" cx="{{ 120 + (i * 97) % 360 }}" cy="{{ 90 + (i * 53) % 300 }}" r="{{ 7 + (i % 3) * 3 }}" style="--d:{{ (i % 7) * 0.4 }}s"/>
+                        {% for l in [(120,150,-35,1.1),(470,130,40,1.0),(90,330,-70,0.9),(500,320,75,1.0),(300,60,0,0.8),(210,250,-20,0.7),(400,240,25,0.7)] %}
+                        <g transform="translate({{ l[0] }} {{ l[1] }}) rotate({{ l[2] }}) scale({{ l[3] }})" class="leaf-wrap">
+                            <path class="leaf" d="M0 0C30 -42 92 -42 124 0C92 42 30 42 0 0Z"/>
+                            <path class="leaf-vein" d="M6 0H112"/>
+                        </g>
                         {% endfor %}
+                        <g class="hummer" transform="translate(300 215)">
+                            <ellipse class="hum-body" cx="0" cy="0" rx="26" ry="11"/>
+                            <circle class="hum-body" cx="-26" cy="-4" r="9"/>
+                            <path class="hum-beak" d="M-34 -4L-72 -12"/>
+                            <path class="hum-wing" d="M-4 -6C10 -52 38 -58 52 -50C34 -36 18 -14 -4 -6Z"/>
+                            <path class="hum-tail" d="M24 2L58 16L50 22Z"/>
+                        </g>
                     </g>
 
-                    <!-- Escena 2: tejido -->
+                    <!-- Capítulo 2: El Tejido (filas de cuentas) -->
                     <g class="scene" data-scene="1">
                         {% for r in range(7) %}{% for c in range(12) %}
-                        <rect class="bead-weave {{ 'gold' if ((c + r) % 4 == 0 or (c - r) % 4 == 0) else 'forest' }}" x="{{ 100 + c * 33 + (r % 2) * 16 }}" y="{{ 120 + r * 38 }}" width="26" height="20" rx="9" style="--i:{{ r * 12 + c }}"/>
+                        <rect class="bead-weave {{ 'orange' if ((c + r) % 4 == 0 or (c - r) % 4 == 0) else 'teal' }}" x="{{ 100 + c * 33 + (r % 2) * 16 }}" y="{{ 100 + r * 38 }}" width="26" height="20" rx="9" style="--i:{{ r * 12 + c }}"/>
                         {% endfor %}{% endfor %}
                     </g>
 
-                    <!-- Escena 3: cuero -->
+                    <!-- Capítulo 3: Los Tejedores (cuatro integrantes, desde 2006) -->
                     <g class="scene" data-scene="2">
-                        <rect x="130" y="130" width="340" height="240" rx="14" class="leather"/>
-                        <rect x="150" y="150" width="300" height="200" rx="8" class="stitch" pathLength="100"/>
-                        <path d="M130 215H470" class="leather-fold"/>
-                        <circle cx="300" cy="215" r="9" class="leather-stud"/>
-                    </g>
-
-                    <!-- Escena 4: sello -->
-                    <g class="scene" data-scene="3">
-                        <g class="seal">
-                            <circle cx="300" cy="250" r="150" class="seal-ring"/>
-                            {% for i in range(12) %}
-                            <g transform="rotate({{ i * 30 }} 300 250) translate(300 108)"><circle r="14" class="rosette"/><circle r="4" class="rosette-dot"/></g>
-                            {% endfor %}
+                        {% for p in [(180,1.0),(280,1.0),(380,0.7),(450,0.7)] %}
+                        <g class="weaver" transform="translate({{ p[0] }} {{ 250 + (1 - p[1]) * 130 }}) scale({{ p[1] }})" style="--i:{{ loop.index0 }}">
+                            <circle class="weaver-head" cx="0" cy="0" r="22"/>
+                            <path class="weaver-body" d="M-30 150V70C-30 40 -16 32 0 32C16 32 30 40 30 70V150Z"/>
+                            {% for k in range(6) %}<circle class="weaver-bead" cx="{{ -20 + k * 8 }}" cy="{{ 80 + (k % 2) * 14 }}" r="3"/>{% endfor %}
                         </g>
-                        <path d="M300 195 L335 295 H318 L310 272 H290 L282 295 H265 Z M300 226 L293 255 H307 Z" class="seal-a" fill-rule="evenodd"/>
+                        {% endfor %}
+                        <text x="300" y="115" text-anchor="middle" class="year-text">2006</text>
                     </g>
 
-                    <!-- Jaguar que recorre el escenario con el scroll -->
+                    <!-- Jaguar propio, hecho de cuentas, que recorre el escenario con el scroll -->
                     <g class="jaguar" id="story-jaguar">
                         <g class="jag-leg jag-leg-b"><line x1="395" y1="165" x2="385" y2="240"/><line x1="140" y1="165" x2="120" y2="240"/></g>
                         <path class="jag-tail" d="M95 135C60 130 30 100 40 60C44 45 60 42 64 55"/>
-                        <path class="jag-fill" d="M92 128C140 96 220 100 290 102C340 104 380 98 420 92C440 80 470 78 495 88C515 95 540 105 548 118C552 126 548 134 540 136C525 140 510 138 500 142C490 150 470 152 455 148C440 160 430 172 420 178C380 188 300 185 240 184C180 184 140 180 110 172C84 160 80 140 92 128Z"/>
-                        <path class="jag-fill" d="M462 88L468 62L486 84Z"/>
+                        <path class="jag-skin" d="M92 128C140 96 220 100 290 102C340 104 380 98 420 92C440 80 470 78 495 88C515 95 540 105 548 118C552 126 548 134 540 136C525 140 510 138 500 142C490 150 470 152 455 148C440 160 430 172 420 178C380 188 300 185 240 184C180 184 140 180 110 172C84 160 80 140 92 128Z"/>
+                        <path class="jag-skin" d="M462 88L468 62L486 84Z"/>
                         <g clip-path="url(#jag-clip)">
                             {% for p in [(140,128),(200,150),(250,118),(300,150),(345,122),(385,150),(170,100),(420,120),(230,172),(330,175),(120,155),(455,125)] %}
-                            <g transform="translate({{ p[0] }} {{ p[1] }})"><circle r="11" class="rosette"/><circle r="3.500" class="rosette-dot"/></g>
+                            <g transform="translate({{ p[0] }} {{ p[1] }})"><circle r="10" class="rosette"/><circle r="3" class="rosette-dot"/></g>
                             {% endfor %}
                         </g>
-                        <circle cx="505" cy="104" r="4" class="jag-eye"/>
+                        <circle cx="505" cy="104" r="4.500" class="jag-eye"/>
                         <g class="jag-leg jag-leg-f"><line x1="425" y1="168" x2="445" y2="235"/><line x1="175" y1="170" x2="195" y2="238"/></g>
                     </g>
                 </svg>
                 <div class="story-progress"><span id="story-progress-bar"></span></div>
             </div>
 
-            <ol class="story-steps">
-                <li class="story-step" data-step="0">
-                    <span class="trust-num">01</span>
-                    <h3>Materiales nobles</h3>
-                    <p>Delicas japonesas Miyuki, mostacilla checa calibrada y cuero curtido vegetal. Cada color se escoge a mano.</p>
-                </li>
-                <li class="story-step" data-step="1">
-                    <span class="trust-num">02</span>
-                    <h3>Cuenta por cuenta</h3>
-                    <p>El tejido se hace a mano, sin procesos industriales. Una manilla en delica puede requerir hasta diez horas de concentración.</p>
-                </li>
-                <li class="story-step" data-step="2">
-                    <span class="trust-num">03</span>
-                    <h3>Cuero con costura manual</h3>
-                    <p>Cada corte honra la materia prima. La costura se hace a mano y el acabado se pule con cera de abejas.</p>
-                </li>
-                <li class="story-step" data-step="3">
-                    <span class="trust-num">04</span>
-                    <h3>Tuya, desde San Agustín</h3>
-                    <p>{{ POLITICA.envio_cobertura }}. {{ POLITICA.envio_plazo }} Escríbenos por WhatsApp y coordinamos tu pedido.</p>
-                    <a href="/lineaproductos" class="btn btn-primary btn-sm">Ver el catálogo</a>
-                </li>
-            </ol>
+            <div class="story-steps">
+                <article id="manigua" class="story-step" data-step="0">
+                    <h2 class="chapter-title">La Manigua</h2>
+                    <span class="beads-row" aria-hidden="true"></span>
+                    <p>Jungla, selva profunda y densa generadora de vida; hogar de guacamayos, colibríes, jaguares y chamanes, de cuya majestuosa belleza toman colores y formas para plasmarlas en tejidos y accesorios, con el fin de recordar a la humanidad su existencia e inminente necesidad de conservarla.</p>
+                </article>
+
+                <article id="tejido" class="story-step" data-step="1">
+                    <h2 class="chapter-title">El Tejido</h2>
+                    <span class="beads-row" aria-hidden="true"></span>
+                    <p>Ha sido espacio-refugio que permitió repensar sus vidas a través de la creación y extensas jornadas de íntima meditación.</p>
+                    <p>Quien adquiere un accesorio contribuye al desarrollo de su proyecto de vida alternativo y respetuoso con el ambiente.</p>
+                </article>
+
+                <article id="tejedores" class="story-step" data-step="2">
+                    <h2 class="chapter-title">Los Tejedores</h2>
+                    <span class="beads-row" aria-hidden="true"></span>
+                    <p>Proyecto familiar de cuatro integrantes (dos adultos y dos niños) iniciado en 2006. Tejedores: {{ CONTACTO.tejedores }}.</p>
+                    <ul class="awards">
+                        <li><strong>2017</strong> Mejor exhibición de producto en la Feria Nacional Artesanal de Pitalito (Huila).</li>
+                        <li><strong>2018</strong> Primer puesto en bisutería en el Encuentro Nacional de Maestros Artesanos, Neiva (Huila).</li>
+                        <li><strong>2019</strong> Homenaje por fomentar el relevo generacional de la actividad artesanal, en el mismo encuentro, Neiva.</li>
+                    </ul>
+                </article>
+            </div>
         </div>
     </div>
 </section>
